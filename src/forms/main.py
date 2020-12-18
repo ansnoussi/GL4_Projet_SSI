@@ -3,7 +3,16 @@ import npyscreen, curses
 
 class MainForm(npyscreen.FormWithMenus):
     def create(self):
-        self.add(npyscreen.FixedText,value= "OUTIL SSI_INSAT POUR LA CRYPTOGRAPHIE" )
+        pager = self.add(npyscreen.Pager,title= "credit" )
+        pager.center = True
+        pager.autowrap = True
+        pager.editable  = False
+
+        with open("credit", 'r') as credit:
+            pager.values = credit.readlines()[:50]
+
+        pager.update()
+
         self.how_exited_handers[npyscreen.wgwidget.EXITED_ESCAPE]  = self.exit_application    
         
         # The menus are created here.
