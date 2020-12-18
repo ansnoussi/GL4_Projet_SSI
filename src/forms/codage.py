@@ -14,10 +14,7 @@ class CodageForm(npyscreen.FormWithMenus):
         ])  
 
     def exit_application(self):
-        curses.beep()
-        self.parentApp.setNextForm(None)
-        self.editing = False
-        self.parentApp.switchFormNow()
+        pass
 
     def retour(self, *args, **keywords):
         self.parentApp.change_form("MAIN")

@@ -16,14 +16,14 @@ class MyApp(npyscreen.NPSAppManaged):
         # These two forms are persistent between each edit.
         self.addForm("MAIN",       MainForm, name="OUTIL SSI_INSAT POUR LA CRYPTOGRAPHIE", color="IMPORTANT",)
         # This one will be re-created each time it is edited.
-        self.addFormClass("CODAGE", CodageForm, name="Codage", color="WARNING")
-        self.addFormClass("DECODAGE", DecodageForm, name="Deodage", color="WARNING")
-        self.addFormClass("HACHAGE", HachageForm, name="Hachage", color="WARNING")
-        self.addFormClass("CRAQUAGE", CraquageForm, name="Craquage", color="WARNING")
-        self.addFormClass("CHIFF_SYM", ChiffSymForm, name="Chiffrement Symetrique", color="WARNING")
-        self.addFormClass("DECHIFF_SYM", DechiffSymForm, name="Dechiffrement Synetrique", color="WARNING")
-        self.addFormClass("CHIFF_ASYM", ChiffAsymForm, name="Chiffrement Asymetrique", color="WARNING")
-        self.addFormClass("DECHIFF_ASYM", CodageForm, name="Dechiffrement Asynetrique", color="WARNING")
+        self.addForm("CODAGE", CodageForm, name="Codage", color="WARNING")
+        self.addForm("DECODAGE", DecodageForm, name="Deodage", color="WARNING")
+        self.addForm("HACHAGE", HachageForm, name="Hachage", color="WARNING")
+        self.addForm("CRAQUAGE", CraquageForm, name="Craquage", color="WARNING")
+        self.addForm("CHIFF_SYM", ChiffSymForm, name="Chiffrement Symetrique", color="WARNING")
+        self.addForm("DECHIFF_SYM", DechiffSymForm, name="Dechiffrement Synetrique", color="WARNING")
+        self.addForm("CHIFF_ASYM", ChiffAsymForm, name="Chiffrement Asymetrique", color="WARNING")
+        self.addForm("DECHIFF_ASYM", CodageForm, name="Dechiffrement Asynetrique", color="WARNING")
         
     def onCleanExit(self):
         npyscreen.notify_wait("Au revoir!")
