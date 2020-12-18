@@ -1,11 +1,5 @@
-#!/usr/bin/env python
-# encoding: utf-8
-
 import npyscreen, curses
 
-class MyApp(npyscreen.NPSAppManaged):
-    def onStart(self):
-        self.registerForm("MAIN", MainForm())
 
 class MainForm(npyscreen.FormWithMenus):
     def create(self):
@@ -53,12 +47,3 @@ class MainForm(npyscreen.FormWithMenus):
         self.parentApp.setNextForm(None)
         self.editing = False
         self.parentApp.switchFormNow()
-
-def main():
-    TA = MyApp()
-    TA.run()
-
-
-if __name__ == '__main__':
-    main()
-
