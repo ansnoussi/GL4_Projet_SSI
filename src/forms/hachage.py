@@ -40,6 +40,4 @@ class HachageForm(npyscreen.FormWithMenus, npyscreen.ActionFormMinimal):
     def afterEditing(self):
         pass
     def on_ok(self):
-        # self.output.values = [self.Options.get("Votre Message").value]
-        # self.output.values = [self.Options.get("Fonction de hachage").value[0]]
         self.output.values = [HachageHelper.hash(self.Options.get("Fonction de hachage").value[0], self.Options.get("Votre Message").value)]
