@@ -1,5 +1,5 @@
 import npyscreen
-
+from src.helpers.hachage import HachageHelper
 
 class HachageForm(npyscreen.FormWithMenus, npyscreen.ActionFormMinimal):
     def create(self):
@@ -13,7 +13,7 @@ class HachageForm(npyscreen.FormWithMenus, npyscreen.ActionFormMinimal):
         options = Options.options
         
         options.append(npyscreen.OptionMultiFreeText('Votre Message', value=''))
-        options.append(npyscreen.OptionSingleChoice('Fonction de hachage', choices=['Choice 1', 'Choice 2', 'Choice 3']))
+        options.append(npyscreen.OptionSingleChoice('Fonction de hachage', choices=HachageHelper.getAvailable()))
 
 
         self.add(npyscreen.OptionListDisplay, name="Option List", 
@@ -40,4 +40,4 @@ class HachageForm(npyscreen.FormWithMenus, npyscreen.ActionFormMinimal):
     def afterEditing(self):
         pass
     def on_ok(self):
-        self.output.values = ["hello"]
+        self.output.values = ["hey"]
