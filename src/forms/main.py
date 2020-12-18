@@ -11,32 +11,32 @@ class MainForm(npyscreen.FormWithMenus):
         
         self.mCodage = self.mMain.addNewSubmenu("Codage")
         self.mCodage.addItemsFromList([
-            ("Coder un message",   self.whenJustBeep),
-            ("Decoder un message",   self.whenJustBeep),
+            ("Coder un message",   self.goToCodage),
+            ("Decoder un message",   self.goToDecodage),
         ])
 
         self.mMain.addItemsFromList([
-            ("Hachage", self.whenJustBeep),
+            ("Hachage", self.goToHachage),
         ])  
 
         self.mMain.addItemsFromList([
-            ("Craquage", self.whenJustBeep),
+            ("Craquage", self.goToCraquage),
         ])  
 
         self.mChSym = self.mMain.addNewSubmenu("Chiffrement Symetrique")
         self.mChSym.addItemsFromList([
-            ("Saisir un message à chiffrer",   self.whenJustBeep),
-            ("Saisir un message chiffré",   self.whenJustBeep),
+            ("Saisir un message à chiffrer",   self.goToChiffSym),
+            ("Saisir un message chiffré",   self.goToDechiffSym),
         ])
 
         self.mChAsym = self.mMain.addNewSubmenu("Chiffrement Asymetrique")
         self.mChAsym.addItemsFromList([
-            ("Saisir un message à chiffrer",   self.whenJustBeep),
-            ("Saisir un message chiffré",   self.whenJustBeep),
+            ("Saisir un message à chiffrer",   self.goToChiffAsym),
+            ("Saisir un message chiffré",   self.goToDechiffAsym),
         ])
 
         self.mMain.addItemsFromList([
-            ("Exit Application", self.exit_application),
+            ("Quitter", self.exit_application),
         ])  
 
     def whenJustBeep(self):
@@ -47,3 +47,20 @@ class MainForm(npyscreen.FormWithMenus):
         self.parentApp.setNextForm(None)
         self.editing = False
         self.parentApp.switchFormNow()
+
+    def goToCodage(self, *args, **keywords):
+        self.parentApp.change_form("CODAGE")
+    def goToDecodage(self, *args, **keywords):
+        self.parentApp.change_form("DECODAGE")
+    def goToHachage(self, *args, **keywords):
+        self.parentApp.change_form("HACHAGE")
+    def goToCraquage(self, *args, **keywords):
+        self.parentApp.change_form("CRAQUAGE")
+    def goToChiffSym(self, *args, **keywords):
+        self.parentApp.change_form("CHIFF_SYM")
+    def goToDechiffSym(self, *args, **keywords):
+        self.parentApp.change_form("DECHIFF_SYM")
+    def goToChiffAsym(self, *args, **keywords):
+        self.parentApp.change_form("CHIFF_ASYM")
+    def goToDechiffAsym(self, *args, **keywords):
+        self.parentApp.change_form("DECHIFF_ASYM")
