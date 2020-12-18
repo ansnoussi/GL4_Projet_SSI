@@ -9,40 +9,40 @@ class MyApp(npyscreen.NPSAppManaged):
 
 class MainForm(npyscreen.FormWithMenus):
     def create(self):
-        self.add(npyscreen.TitleText, name = "Text:", value= "this is : PentCrate." )
+        self.add(npyscreen.FixedText,value= "OUTIL SSI_INSAT POUR LA CRYPTOGRAPHIE" )
         self.how_exited_handers[npyscreen.wgwidget.EXITED_ESCAPE]  = self.exit_application    
         
         # The menus are created here.
-        self.mMain = self.add_menu(name="Menu", shortcut="m")
+        self.mMain = self.add_menu(name="Menu")
         
-        self.mCodage = self.mMain.addNewSubmenu("Codage", "c")
+        self.mCodage = self.mMain.addNewSubmenu("Codage")
         self.mCodage.addItemsFromList([
             ("Coder un message",   self.whenJustBeep),
             ("Decoder un message",   self.whenJustBeep),
         ])
 
         self.mMain.addItemsFromList([
-            ("Hachage", self.whenJustBeep, "h"),
+            ("Hachage", self.whenJustBeep),
         ])  
 
         self.mMain.addItemsFromList([
-            ("Craquage", self.whenJustBeep, "k"),
+            ("Craquage", self.whenJustBeep),
         ])  
 
-        self.mChSym = self.mMain.addNewSubmenu("Chiffrement Symetrique", "s")
+        self.mChSym = self.mMain.addNewSubmenu("Chiffrement Symetrique")
         self.mChSym.addItemsFromList([
             ("Saisir un message à chiffrer",   self.whenJustBeep),
             ("Saisir un message chiffré",   self.whenJustBeep),
         ])
 
-        self.mChAsym = self.mMain.addNewSubmenu("Chiffrement Asymetrique", "a")
+        self.mChAsym = self.mMain.addNewSubmenu("Chiffrement Asymetrique")
         self.mChAsym.addItemsFromList([
             ("Saisir un message à chiffrer",   self.whenJustBeep),
             ("Saisir un message chiffré",   self.whenJustBeep),
         ])
 
         self.mMain.addItemsFromList([
-            ("Exit Application", self.exit_application, "e"),
+            ("Exit Application", self.exit_application),
         ])  
 
     def whenJustBeep(self):
