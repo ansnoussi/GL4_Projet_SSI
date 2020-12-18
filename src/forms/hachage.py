@@ -8,9 +8,9 @@ class HachageForm(npyscreen.FormWithMenus, npyscreen.ActionFormMinimal):
         self.add(npyscreen.FixedText,value= "OPTIONS:" )
         self.how_exited_handers[npyscreen.wgwidget.EXITED_ESCAPE]  = self.exit_application    
         
-        Options = npyscreen.OptionList()
+        self.Options = npyscreen.OptionList()
         # just for convenience so we don't have to keep writing Options.options
-        options = Options.options
+        options = self.Options.options
         
         options.append(npyscreen.OptionMultiFreeText('Votre Message', value=''))
         options.append(npyscreen.OptionSingleChoice('Fonction de hachage', choices=HachageHelper.getAvailable()))
@@ -40,4 +40,6 @@ class HachageForm(npyscreen.FormWithMenus, npyscreen.ActionFormMinimal):
     def afterEditing(self):
         pass
     def on_ok(self):
-        self.output.values = ["hey"]
+        # self.output.values = [self.Options.get("Votre Message").value]
+        # self.output.values = [self.Options.get("Fonction de hachage").value[0]]
+        self.output.values = [HachageHelper.hash(self.Options.get("Fonction de hachage").value[0], self.Options.get("Votre Message").value)]
