@@ -8,8 +8,8 @@ class HachageHelper:
         return list(hashlib.algorithms_available)
 
     @staticmethod
-    def hash(alog, msg):
-        h = hashlib.new(alog)
+    def hash(algo, msg):
+        h = hashlib.new(algo)
         b = msg.encode('utf-8')
         h.update(b)
         return h.hexdigest()
