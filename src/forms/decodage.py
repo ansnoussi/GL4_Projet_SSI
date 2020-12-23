@@ -1,27 +1,4 @@
 import npyscreen
-
-
-class DecodageForm(npyscreen.FormWithMenus):
-    def create(self):
-        self.add(npyscreen.FixedText,value= "DECODAGE" )
-        self.how_exited_handers[npyscreen.wgwidget.EXITED_ESCAPE]  = self.exit_application    
-        
-        # The menus are created here.
-        self.mMain = self.add_menu(name="Menu")
-
-        self.mMain.addItemsFromList([
-            ("Retour", self.retour),
-        ])  
-
-    def exit_application(self):
-        pass
-
-    def retour(self, *args, **keywords):
-        self.parentApp.change_form("MAIN")
-
-
-
-import npyscreen
 from src.helpers.codage import CodageHelper
 
 class DecodageForm(npyscreen.FormWithMenus, npyscreen.ActionFormMinimal):
