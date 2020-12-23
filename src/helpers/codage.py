@@ -67,13 +67,13 @@ class CodageHelper:
     @staticmethod
     def encode(algo, msg):
         options = {
-           "Binary" : enc_binary,
-           "Base16" : enc_hex,
-           "Base32" : enc_base32,
-           "Base64" : enc_base64,
-           "Rot13" : rot13,
-           "URL" : enc_url,
-           "Morse" : enc_morse,
+           "Binary" : CodageHelper.enc_binary,
+           "Base16" : CodageHelper.enc_hex,
+           "Base32" : CodageHelper.enc_base32,
+           "Base64" : CodageHelper.enc_base64,
+           "Rot13" : CodageHelper.rot13,
+           "URL" : CodageHelper.enc_url,
+           "Morse" : CodageHelper.enc_morse,
         }
         if algo in ALGOS :
             return options[algo](msg)
@@ -83,13 +83,13 @@ class CodageHelper:
     @staticmethod
     def decode(algo, msg):
         options = {
-           "Binary" : dec_binary,
-           "Base16" : dec_hex,
-           "Base32" : dec_base32,
-           "Base64" : dec_base64,
-           "Rot13" : rot13,
-           "URL" : dec_url,
-           "Morse" : dec_morse,
+           "Binary" : CodageHelper.dec_binary,
+           "Base16" : CodageHelper.dec_hex,
+           "Base32" : CodageHelper.dec_base32,
+           "Base64" : CodageHelper.dec_base64,
+           "Rot13" : CodageHelper.rot13,
+           "URL" : CodageHelper.dec_url,
+           "Morse" : CodageHelper.dec_morse,
         }
         if algo in ALGOS :
             return options[algo](msg)
@@ -102,7 +102,7 @@ class CodageHelper:
         return "0" + bin(int(binascii.hexlify(string_to_encode.encode('utf-8')), 16))[2:]
 
     @staticmethod
-    def dec_enc_binary(string_to_decode):
+    def dec_binary(string_to_decode):
         try:
             s = int(string_to_decode, 2)
             return binascii.unhexlify('%x' % s).decode("utf-8")
@@ -112,7 +112,7 @@ class CodageHelper:
     #HEX
     @staticmethod
     def enc_hex(string_to_encode):
-        return base64.b16encode(string_to_encode.encode('utf-8'))
+        return base64.b16encode(string_to_encode.encode('utf-8')).decode("utf-8")
 
     @staticmethod
     def dec_hex(string_to_decode):
@@ -127,7 +127,7 @@ class CodageHelper:
     #BASE32
     @staticmethod
     def enc_base32(string_to_encode):
-        return base64.b32encode(string_to_encode.encode('utf-8'))
+        return base64.b32encode(string_to_encode.encode('utf-8')).decode("utf-8")
 
     @staticmethod
     def dec_base32(string_to_decode):
@@ -140,7 +140,7 @@ class CodageHelper:
     #BASE64
     @staticmethod
     def enc_base64(string_to_encode):
-        return base64.b64encode(string_to_encode).encode("utf-8")
+        return base64.b64encode(string_to_encode).encode("utf-8").decode("utf-8")
 
     @staticmethod
     def dec_base64(string_to_decode):
