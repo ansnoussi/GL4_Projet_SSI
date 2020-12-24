@@ -16,12 +16,12 @@ class HachageHelper:
 
     @staticmethod
     def crackHash(algo, hash, wordlist):
-        h = hashlib.new(algo)
         with open(wordlist) as f:
             for line in f:
-                line = line.strip().encode('utf-8')
+                h = hashlib.new(algo)
+                line = line.strip().encode()
                 h.update(line)
                 lineHash = h.hexdigest()
                 if lineHash == hash:
-                    return line
-        return "hash_not_found"
+                    return line.decode()
+        return 'not_found'
