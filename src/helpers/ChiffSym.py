@@ -1,8 +1,6 @@
-import base64
-import binascii
-import urllib.parse
 
-ALGOS = ["AES", "DES", "IDEA",  "Blowfish", "RC4", "RC5", "RC6"]
+
+ALGOS = ["AES", "DES", "DES3", "Blowfish", "ARC2", "ARC4", "CAST", "XOR"]
 
 class ChiffSym:
 
@@ -15,11 +13,12 @@ class ChiffSym:
         options = {
            "AES" : ChiffSym.enc_aes,
            "DES" : ChiffSym.enc_des,
-           "IDEA" : ChiffSym.enc_idea,
+           "DES3" : ChiffSym.enc_des3,
            "Blowfish" : ChiffSym.enc_blowfish,
-           "RC4" : ChiffSym.enc_rc4,
-           "RC5" : ChiffSym.enc_rc5,
-           "RC6" : ChiffSym.enc_rc6,
+           "ARC2" : ChiffSym.enc_arc2,
+           "ARC4" : ChiffSym.enc_arc4,
+           "CAST" : ChiffSym.enc_cast,
+           "XOR" : ChiffSym.enc_xor,
         }
         if algo in ALGOS :
             return options[algo](msg)
@@ -31,11 +30,12 @@ class ChiffSym:
         options = {
            "AES" : ChiffSym.dec_aes,
            "DES" : ChiffSym.dec_des,
-           "IDEA" : ChiffSym.dec_idea,
+           "DES3" : ChiffSym.dec_des3,
            "Blowfish" : ChiffSym.dec_blowfish,
-           "RC4" : ChiffSym.dec_rc4,
-           "RC5" : ChiffSym.dec_rc5,
-           "RC6" : ChiffSym.dec_rc6,
+           "ARC2" : ChiffSym.dec_arc2,
+           "ARC4" : ChiffSym.dec_arc4,
+           "CAST" : ChiffSym.dec_cast,
+           "XOR" : ChiffSym.dec_xor,
         }
         if algo in ALGOS :
             return options[algo](msg)
@@ -60,13 +60,13 @@ class ChiffSym:
     def dec_des(string_to_decrypt,key):
         treturn "1"
 
-    #IDEA
+    #DES3
     @staticmethod
-    def enc_idea(string_to_encrypt,key):
+    def enc_des3(string_to_encrypt,key):
         return "0"
 
     @staticmethod
-    def dec_idea(string_to_decrypt,key):
+    def dec_des3(string_to_decrypt,key):
         treturn "1"
 
     #BLOWFISH
@@ -78,29 +78,38 @@ class ChiffSym:
     def dec_blowfish(string_to_decrypt,key):
         treturn "1"
 
-    #RC4
+    #ARC2
     @staticmethod
-    def enc_rc4(string_to_encrypt,key):
+    def enc_arc2(string_to_encrypt,key):
         return "0"
 
     @staticmethod
-    def dec_rc4(string_to_decrypt,key):
+    def dec_arc2(string_to_decrypt,key):
         treturn "1"
 
-    #RC5
+    #ARC4
     @staticmethod
-    def enc_rc5(string_to_encrypt,key):
+    def enc_arc4(string_to_encrypt,key):
         return "0"
 
     @staticmethod
-    def dec_rc5(string_to_decrypt,key):
+    def dec_arc4(string_to_decrypt,key):
         treturn "1"
 
-    #RC6
+    #CAST
     @staticmethod
-    def enc_rc6(string_to_encrypt,key):
+    def enc_cast(string_to_encrypt,key):
         return "0"
 
     @staticmethod
-    def dec_rc6(string_to_decrypt,key):
+    def dec_cast(string_to_decrypt,key):
+        treturn "1"
+
+    #XOR
+    @staticmethod
+    def enc_xor(string_to_encrypt,key):
+        return "0"
+
+    @staticmethod
+    def dec_xor(string_to_decrypt,key):
         treturn "1"
