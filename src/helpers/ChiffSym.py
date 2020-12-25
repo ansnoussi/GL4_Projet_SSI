@@ -13,13 +13,13 @@ class ChiffSym:
     @staticmethod
     def encode(algo, msg):
         options = {
-           "AES" : ChiffSym.enc_binary,
-           "DES" : ChiffSym.enc_hex,
-           "IDEA" : ChiffSym.enc_base32,
-           "Blowfish" : ChiffSym.enc_base64,
-           "RC4" : ChiffSym.rot13,
-           "RC5" : ChiffSym.enc_url,
-           "RC6" : ChiffSym.enc_morse,
+           "AES" : ChiffSym.enc_aes,
+           "DES" : ChiffSym.enc_des,
+           "IDEA" : ChiffSym.enc_idea,
+           "Blowfish" : ChiffSym.enc_blowfish,
+           "RC4" : ChiffSym.enc_rc4,
+           "RC5" : ChiffSym.enc_rc5,
+           "RC6" : ChiffSym.enc_rc6,
         }
         if algo in ALGOS :
             return options[algo](msg)
@@ -29,13 +29,13 @@ class ChiffSym:
     @staticmethod
     def decode(algo, msg):
         options = {
-           "AES" : ChiffSym.dec_binary,
-           "DES" : ChiffSym.dec_hex,
-           "IDEA" : ChiffSym.dec_base32,
-           "Blowfish" : ChiffSym.dec_base64,
-           "RC4" : ChiffSym.rot13,
-           "RC5" : ChiffSym.dec_url,
-           "RC6" : ChiffSym.dec_morse,
+           "AES" : ChiffSym.dec_aes,
+           "DES" : ChiffSym.dec_des,
+           "IDEA" : ChiffSym.dec_idea,
+           "Blowfish" : ChiffSym.dec_blowfish,
+           "RC4" : ChiffSym.dec_rc4,
+           "RC5" : ChiffSym.dec_rc5,
+           "RC6" : ChiffSym.dec_rc6,
         }
         if algo in ALGOS :
             return options[algo](msg)
@@ -44,63 +44,63 @@ class ChiffSym:
 
     #AES
     @staticmethod
-    def enc_aes(string_to_encrypt):
+    def enc_aes(string_to_encrypt,key):
         return "0"
 
     @staticmethod
-    def dec_aes(string_to_decrypt):
+    def dec_aes(string_to_decrypt,key):
         treturn "1"
 
     #DES
     @staticmethod
-    def enc_des(string_to_encrypt):
+    def enc_des(string_to_encrypt,key):
         return "0"
 
     @staticmethod
-    def dec_des(string_to_decrypt):
+    def dec_des(string_to_decrypt,key):
         treturn "1"
 
     #IDEA
     @staticmethod
-    def enc_idea(string_to_encrypt):
+    def enc_idea(string_to_encrypt,key):
         return "0"
 
     @staticmethod
-    def dec_idea(string_to_decrypt):
+    def dec_idea(string_to_decrypt,key):
         treturn "1"
 
     #BLOWFISH
     @staticmethod
-    def enc_blowfish(string_to_encrypt):
+    def enc_blowfish(string_to_encrypt,key):
         return "0"
 
     @staticmethod
-    def dec_blowfish(string_to_decrypt):
+    def dec_blowfish(string_to_decrypt,key):
         treturn "1"
 
     #RC4
     @staticmethod
-    def enc_rc4(string_to_encrypt):
+    def enc_rc4(string_to_encrypt,key):
         return "0"
 
     @staticmethod
-    def dec_rc4(string_to_decrypt):
+    def dec_rc4(string_to_decrypt,key):
         treturn "1"
 
     #RC5
     @staticmethod
-    def enc_rc5(string_to_encrypt):
+    def enc_rc5(string_to_encrypt,key):
         return "0"
 
     @staticmethod
-    def dec_rc5(string_to_decrypt):
+    def dec_rc5(string_to_decrypt,key):
         treturn "1"
 
     #RC6
     @staticmethod
-    def enc_rc6(string_to_encrypt):
+    def enc_rc6(string_to_encrypt,key):
         return "0"
 
     @staticmethod
-    def dec_rc6(string_to_decrypt):
+    def dec_rc6(string_to_decrypt,key):
         treturn "1"
