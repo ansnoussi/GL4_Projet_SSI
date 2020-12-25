@@ -9,7 +9,7 @@ class ChiffSym:
         return ALGOS
 
     @staticmethod
-    def encode(algo, msg):
+    def encrypt(algo, msg):
         options = {
            "AES" : ChiffSym.enc_aes,
            "DES" : ChiffSym.enc_des,
@@ -26,7 +26,7 @@ class ChiffSym:
             return "Something went wrong"
 
     @staticmethod
-    def decode(algo, msg):
+    def decrypt(algo, msg):
         options = {
            "AES" : ChiffSym.dec_aes,
            "DES" : ChiffSym.dec_des,
