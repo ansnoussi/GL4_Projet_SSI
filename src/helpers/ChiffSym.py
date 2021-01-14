@@ -115,8 +115,7 @@ class ChiffSymHelper:
     #BLOWFISH
     @staticmethod
     def enc_blowfish(string_to_encrypt,key):
-        hashed_key = HachageHelper.hash('md5',key)
-        cipher = Blowfish.new(hashed_key[:16])
+        cipher = Blowfish.new(key)
         padded_private_msg = string_to_encrypt + (padding_character * ((16-len(string_to_encrypt)) % 16))
         encrypted_msg = cipher.encrypt(padded_private_msg)
         encoded_encrypted_msg = base64.b64encode(encrypted_msg)
@@ -125,8 +124,7 @@ class ChiffSymHelper:
 
     @staticmethod
     def dec_blowfish(string_to_decrypt,key):
-        hashed_key = HachageHelper.hash('md5',key)
-        cipher = Blowfish.new(hashed_key[:16])
+        cipher = Blowfish.new(key)
         encrypted_msg = base64.b64decode(string_to_decrypt.encode())
         decrypted_msg = cipher.decrypt(encrypted_msg)
 
