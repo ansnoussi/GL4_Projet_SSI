@@ -31,7 +31,29 @@ class ChiffSymHelper:
         else :
             return "Something went wrong"
 
+    #GENERAL USE
+    @staticmethod
+    def enc_key(key_to_enc , key):
+        return "0"
+    
+    @staticmethod
+    def dec_key(key_to_dec , key):
+        return "1"
+
+    @staticmethod
+    def read_priv_key(file_name):
+        return "aa"
+    
+    @staticmethod
+    def write_key_pairs():
+        return True
+
+
     #RSA
+    @staticmethod
+    def gen_rsa_key():
+        return ["PUB", "PRIV"]
+
     @staticmethod
     def enc_rsa(string_to_encrypt,key):
         return "0"
