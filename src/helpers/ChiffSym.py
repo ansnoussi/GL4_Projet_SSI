@@ -1,5 +1,5 @@
-
-from Crypto.Cipher import AES
+from src.helpers.hachage import HachageHelper
+from Crypto.Cipher import AES, DES
 import base64
 
 ALGOS = ["AES", "DES", "Blowfish", "CAST", "XOR"]
@@ -43,42 +43,51 @@ class ChiffSymHelper:
     #AES
     @staticmethod
     def enc_aes(string_to_encrypt,key):
-        if len(key) != 16 and len(key) != 24 and len(key) != 32:
-            return "AES key length must be either 16, 24, or 32 bytes long"
-        else :
-            # use the secret key to create a AES cipher
-            cipher = AES.new(key)
-            # pad the private_msg
-            # because AES encryption requires the length of the msg to be a multiple of 16
-            padded_private_msg = string_to_encrypt + (padding_character * ((16-len(string_to_encrypt)) % 16))
-            # use the cipher to encrypt the padded message
-            encrypted_msg = cipher.encrypt(padded_private_msg)
-            # encode the encrypted msg
-            encoded_encrypted_msg = base64.b64encode(encrypted_msg)
+        # AES key length must be either 16, 24, or 32 bytes long
+        # we will use truncated md5 hash so we don't restrict the user
+        hashed_key = HachageHelper.hash('md5',key)
+        # use the secret key to create a AES cipher
+        cipher = AES.new(hashed_key)
+        # pad the private_msg
+        # because AES encryption requires the length of the msg to be a multiple of 16
+        padded_private_msg = string_to_encrypt + (padding_character * ((16-len(string_to_encrypt)) % 16))
+        # use the cipher to encrypt the padded message
+        encrypted_msg = cipher.encrypt(padded_private_msg)
+        # encode the encrypted msg
+        encoded_encrypted_msg = base64.b64encode(encrypted_msg)
 
-            return encoded_encrypted_msg.decode()
+        return encoded_encrypted_msg.decode()
 
     @staticmethod
     def dec_aes(string_to_decrypt,key):
-        if len(key) != 16 and len(key) != 24 and len(key) != 32:
-            return "AES key length must be either 16, 24, or 32 bytes long"
-        else :
-            # use the secret key to create a AES cipher
-            cipher = AES.new(key)
-            encrypted_msg = base64.b64decode(string_to_decrypt.encode())
-            # use the cipher to decrypt the encrypted message
-            decrypted_msg = cipher.decrypt(encrypted_msg)
+        hashed_key = HachageHelper.hash('md5',key)
+        # use the secret key to create a AES cipher
+        cipher = AES.new(hashed_key)
+        encrypted_msg = base64.b64decode(string_to_decrypt.encode())
+        # use the cipher to decrypt the encrypted message
+        decrypted_msg = cipher.decrypt(encrypted_msg)
 
-            return decrypted_msg.decode().rstrip(padding_character)
+        return decrypted_msg.decode().rstrip(padding_character)
 
     #DES
     @staticmethod
     def enc_des(string_to_encrypt,key):
-        return "1"
+        hashed_key = HachageHelper.hash('md5',key)
+        cipher = DES.new(hashed_key[:8])
+        padded_private_msg = string_to_encrypt + (padding_character * ((16-len(string_to_encrypt)) % 16))
+        encrypted_msg = cipher.encrypt(padded_private_msg)
+        encoded_encrypted_msg = base64.b64encode(encrypted_msg)
+
+        return encoded_encrypted_msg.decode()
 
     @staticmethod
     def dec_des(string_to_decrypt,key):
-        return "1"
+        hashed_key = HachageHelper.hash('md5',key)
+        cipher = DES.new(hashed_key[:8])
+        encrypted_msg = base64.b64decode(string_to_decrypt.encode())
+        decrypted_msg = cipher.decrypt(encrypted_msg)
+
+        return decrypted_msg.decode().rstrip(padding_character)
 
     #BLOWFISH
     @staticmethod
