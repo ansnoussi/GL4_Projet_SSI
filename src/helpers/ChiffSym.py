@@ -2,7 +2,7 @@
 from Crypto.Cipher import AES
 import base64
 
-ALGOS = ["AES", "DES", "DES3", "Blowfish", "ARC2", "ARC4", "CAST", "XOR"]
+ALGOS = ["AES", "DES", "Blowfish", "CAST", "XOR"]
 
 padding_character = "#"
 
@@ -17,10 +17,7 @@ class ChiffSymHelper:
         options = {
            "AES" : ChiffSymHelper.enc_aes,
            "DES" : ChiffSymHelper.enc_des,
-           "DES3" : ChiffSymHelper.enc_des3,
            "Blowfish" : ChiffSymHelper.enc_blowfish,
-           "ARC2" : ChiffSymHelper.enc_arc2,
-           "ARC4" : ChiffSymHelper.enc_arc4,
            "CAST" : ChiffSymHelper.enc_cast,
            "XOR" : ChiffSymHelper.enc_xor,
         }
@@ -34,10 +31,7 @@ class ChiffSymHelper:
         options = {
            "AES" : ChiffSymHelper.dec_aes,
            "DES" : ChiffSymHelper.dec_des,
-           "DES3" : ChiffSymHelper.dec_des3,
            "Blowfish" : ChiffSymHelper.dec_blowfish,
-           "ARC2" : ChiffSymHelper.dec_arc2,
-           "ARC4" : ChiffSymHelper.dec_arc4,
            "CAST" : ChiffSymHelper.dec_cast,
            "XOR" : ChiffSymHelper.dec_xor,
         }
@@ -74,25 +68,16 @@ class ChiffSymHelper:
             encrypted_msg = base64.b64decode(string_to_decrypt.encode())
             # use the cipher to decrypt the encrypted message
             decrypted_msg = cipher.decrypt(encrypted_msg)
-            
+
             return decrypted_msg.decode().rstrip(padding_character)
 
     #DES
     @staticmethod
     def enc_des(string_to_encrypt,key):
-        return "0"
+        return "1"
 
     @staticmethod
     def dec_des(string_to_decrypt,key):
-        return "1"
-
-    #DES3
-    @staticmethod
-    def enc_des3(string_to_encrypt,key):
-        return "0"
-
-    @staticmethod
-    def dec_des3(string_to_decrypt,key):
         return "1"
 
     #BLOWFISH
@@ -102,24 +87,6 @@ class ChiffSymHelper:
 
     @staticmethod
     def dec_blowfish(string_to_decrypt,key):
-        return "1"
-
-    #ARC2
-    @staticmethod
-    def enc_arc2(string_to_encrypt,key):
-        return "0"
-
-    @staticmethod
-    def dec_arc2(string_to_decrypt,key):
-        return "1"
-
-    #ARC4
-    @staticmethod
-    def enc_arc4(string_to_encrypt,key):
-        return "0"
-
-    @staticmethod
-    def dec_arc4(string_to_decrypt,key):
         return "1"
 
     #CAST
