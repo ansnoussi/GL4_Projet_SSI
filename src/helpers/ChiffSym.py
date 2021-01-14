@@ -1,5 +1,5 @@
 from src.helpers.hachage import HachageHelper
-from Crypto.Cipher import AES, DES, DES3
+from Crypto.Cipher import AES, DES, DES3, Blowfish
 import base64
 
 ALGOS = ["AES", "DES", "Triple DES", "Blowfish", "CAST", "XOR"]
@@ -115,11 +115,22 @@ class ChiffSymHelper:
     #BLOWFISH
     @staticmethod
     def enc_blowfish(string_to_encrypt,key):
-        return "0"
+        hashed_key = HachageHelper.hash('md5',key)
+        cipher = Blowfish.new(hashed_key[:16])
+        padded_private_msg = string_to_encrypt + (padding_character * ((16-len(string_to_encrypt)) % 16))
+        encrypted_msg = cipher.encrypt(padded_private_msg)
+        encoded_encrypted_msg = base64.b64encode(encrypted_msg)
+
+        return encoded_encrypted_msg.decode()
 
     @staticmethod
     def dec_blowfish(string_to_decrypt,key):
-        return "1"
+        hashed_key = HachageHelper.hash('md5',key)
+        cipher = Blowfish.new(hashed_key[:16])
+        encrypted_msg = base64.b64decode(string_to_decrypt.encode())
+        decrypted_msg = cipher.decrypt(encrypted_msg)
+
+        return decrypted_msg.decode().rstrip(padding_character)
 
     #CAST
     @staticmethod
