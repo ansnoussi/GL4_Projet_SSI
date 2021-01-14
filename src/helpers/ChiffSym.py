@@ -1,6 +1,10 @@
 
+from Crypto.Cipher import AES
+import base64
 
 ALGOS = ["AES", "DES", "DES3", "Blowfish", "ARC2", "ARC4", "CAST", "XOR"]
+
+padding_character = "#"
 
 class ChiffSymHelper:
 
@@ -45,11 +49,33 @@ class ChiffSymHelper:
     #AES
     @staticmethod
     def enc_aes(string_to_encrypt,key):
-        return "0"
+        if len(key) != 16 and len(key) != 24 and len(key) != 32:
+            return "AES key length must be either 16, 24, or 32 bytes long"
+        else :
+            # use the secret key to create a AES cipher
+            cipher = AES.new(key)
+            # pad the private_msg
+            # because AES encryption requires the length of the msg to be a multiple of 16
+            padded_private_msg = string_to_encrypt + (padding_character * ((16-len(string_to_encrypt)) % 16))
+            # use the cipher to encrypt the padded message
+            encrypted_msg = cipher.encrypt(padded_private_msg)
+            # encode the encrypted msg
+            encoded_encrypted_msg = base64.b64encode(encrypted_msg)
+
+            return encoded_encrypted_msg.decode()
 
     @staticmethod
     def dec_aes(string_to_decrypt,key):
-        return "1"
+        if len(key) != 16 and len(key) != 24 and len(key) != 32:
+            return "AES key length must be either 16, 24, or 32 bytes long"
+        else :
+            # use the secret key to create a AES cipher
+            cipher = AES.new(key)
+            encrypted_msg = base64.b64decode(string_to_decrypt.encode())
+            # use the cipher to decrypt the encrypted message
+            decrypted_msg = cipher.decrypt(encrypted_msg)
+            
+            return decrypted_msg.decode().rstrip(padding_character)
 
     #DES
     @staticmethod
