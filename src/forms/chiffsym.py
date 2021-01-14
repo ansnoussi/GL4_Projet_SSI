@@ -1,5 +1,5 @@
 import npyscreen
-from src.helpers.codage import CodageHelper
+from src.helpers.ChiffSym import ChiffSymHelper
 
 class ChiffSymForm(npyscreen.FormWithMenus, npyscreen.ActionFormMinimal):
     def create(self):
@@ -13,13 +13,16 @@ class ChiffSymForm(npyscreen.FormWithMenus, npyscreen.ActionFormMinimal):
         options = self.Options.options
         
         options.append(npyscreen.OptionMultiFreeText('Votre Message', value=''))
-        options.append(npyscreen.OptionSingleChoice('Type de chiffrement', choices=CodageHelper.getAvailable()))
+        options.append(npyscreen.OptionSingleChoice('Type de chiffrement', choices=ChiffSymHelper.getAvailable()))
+        # options.append(npyscreen.TitlePassword('Votre Mot de passe', value=''))        
 
 
         self.add(npyscreen.OptionListDisplay, name="Option List", 
                 values = options, 
                 scroll_exit=True,
-                max_height=6)
+                max_height=2)
+        self.pwd = self.add(npyscreen.TitlePassword, name = "Password:")
+        
 
         self.output = self.add(npyscreen.BoxTitle, name="Output:", max_height=4)
         self.output.values = []
@@ -40,4 +43,4 @@ class ChiffSymForm(npyscreen.FormWithMenus, npyscreen.ActionFormMinimal):
     def afterEditing(self):
         pass
     def on_ok(self):
-        self.output.values = [CodageHelper.encode(self.Options.get("Type de chiffrement").value[0], self.Options.get("Votre Message").value)]
+        self.output.values = [ChiffSymHelper.encrypt(self.Options.get("Type de chiffrement").value[0], self.Options.get("Votre Message").value, self.pwd.value)]

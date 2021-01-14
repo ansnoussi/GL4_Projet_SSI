@@ -2,40 +2,40 @@
 
 ALGOS = ["AES", "DES", "DES3", "Blowfish", "ARC2", "ARC4", "CAST", "XOR"]
 
-class ChiffSym:
+class ChiffSymHelper:
 
     @staticmethod
     def getAvailable():
         return ALGOS
 
     @staticmethod
-    def encrypt(algo, msg):
+    def encrypt(algo, msg, key):
         options = {
-           "AES" : ChiffSym.enc_aes,
-           "DES" : ChiffSym.enc_des,
-           "DES3" : ChiffSym.enc_des3,
-           "Blowfish" : ChiffSym.enc_blowfish,
-           "ARC2" : ChiffSym.enc_arc2,
-           "ARC4" : ChiffSym.enc_arc4,
-           "CAST" : ChiffSym.enc_cast,
-           "XOR" : ChiffSym.enc_xor,
+           "AES" : ChiffSymHelper.enc_aes,
+           "DES" : ChiffSymHelper.enc_des,
+           "DES3" : ChiffSymHelper.enc_des3,
+           "Blowfish" : ChiffSymHelper.enc_blowfish,
+           "ARC2" : ChiffSymHelper.enc_arc2,
+           "ARC4" : ChiffSymHelper.enc_arc4,
+           "CAST" : ChiffSymHelper.enc_cast,
+           "XOR" : ChiffSymHelper.enc_xor,
         }
         if algo in ALGOS :
-            return options[algo](msg)
+            return options[algo](msg, key)
         else :
             return "Something went wrong"
 
     @staticmethod
     def decrypt(algo, msg, key):
         options = {
-           "AES" : ChiffSym.dec_aes,
-           "DES" : ChiffSym.dec_des,
-           "DES3" : ChiffSym.dec_des3,
-           "Blowfish" : ChiffSym.dec_blowfish,
-           "ARC2" : ChiffSym.dec_arc2,
-           "ARC4" : ChiffSym.dec_arc4,
-           "CAST" : ChiffSym.dec_cast,
-           "XOR" : ChiffSym.dec_xor,
+           "AES" : ChiffSymHelper.dec_aes,
+           "DES" : ChiffSymHelper.dec_des,
+           "DES3" : ChiffSymHelper.dec_des3,
+           "Blowfish" : ChiffSymHelper.dec_blowfish,
+           "ARC2" : ChiffSymHelper.dec_arc2,
+           "ARC4" : ChiffSymHelper.dec_arc4,
+           "CAST" : ChiffSymHelper.dec_cast,
+           "XOR" : ChiffSymHelper.dec_xor,
         }
         if algo in ALGOS :
             return options[algo](msg, key)
@@ -49,7 +49,7 @@ class ChiffSym:
 
     @staticmethod
     def dec_aes(string_to_decrypt,key):
-        treturn "1"
+        return "1"
 
     #DES
     @staticmethod
@@ -58,7 +58,7 @@ class ChiffSym:
 
     @staticmethod
     def dec_des(string_to_decrypt,key):
-        treturn "1"
+        return "1"
 
     #DES3
     @staticmethod
@@ -67,7 +67,7 @@ class ChiffSym:
 
     @staticmethod
     def dec_des3(string_to_decrypt,key):
-        treturn "1"
+        return "1"
 
     #BLOWFISH
     @staticmethod
@@ -76,7 +76,7 @@ class ChiffSym:
 
     @staticmethod
     def dec_blowfish(string_to_decrypt,key):
-        treturn "1"
+        return "1"
 
     #ARC2
     @staticmethod
@@ -85,7 +85,7 @@ class ChiffSym:
 
     @staticmethod
     def dec_arc2(string_to_decrypt,key):
-        treturn "1"
+        return "1"
 
     #ARC4
     @staticmethod
@@ -94,7 +94,7 @@ class ChiffSym:
 
     @staticmethod
     def dec_arc4(string_to_decrypt,key):
-        treturn "1"
+        return "1"
 
     #CAST
     @staticmethod
@@ -103,7 +103,7 @@ class ChiffSym:
 
     @staticmethod
     def dec_cast(string_to_decrypt,key):
-        treturn "1"
+        return "1"
 
     #XOR
     @staticmethod
@@ -112,4 +112,4 @@ class ChiffSym:
 
     @staticmethod
     def dec_xor(string_to_decrypt,key):
-        treturn "1"
+        return "1"
