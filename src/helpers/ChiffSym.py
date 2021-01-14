@@ -1,8 +1,8 @@
 from src.helpers.hachage import HachageHelper
-from Crypto.Cipher import AES, DES
+from Crypto.Cipher import AES, DES, DES3
 import base64
 
-ALGOS = ["AES", "DES", "Blowfish", "CAST", "XOR"]
+ALGOS = ["AES", "DES", "Triple DES", "Blowfish", "CAST", "XOR"]
 
 padding_character = "#"
 
@@ -17,6 +17,7 @@ class ChiffSymHelper:
         options = {
            "AES" : ChiffSymHelper.enc_aes,
            "DES" : ChiffSymHelper.enc_des,
+           "Triple DES" : ChiffSymHelper.enc_des3,
            "Blowfish" : ChiffSymHelper.enc_blowfish,
            "CAST" : ChiffSymHelper.enc_cast,
            "XOR" : ChiffSymHelper.enc_xor,
@@ -31,6 +32,7 @@ class ChiffSymHelper:
         options = {
            "AES" : ChiffSymHelper.dec_aes,
            "DES" : ChiffSymHelper.dec_des,
+           "Triple DES" : ChiffSymHelper.dec_des3,
            "Blowfish" : ChiffSymHelper.dec_blowfish,
            "CAST" : ChiffSymHelper.dec_cast,
            "XOR" : ChiffSymHelper.dec_xor,
@@ -88,6 +90,27 @@ class ChiffSymHelper:
         decrypted_msg = cipher.decrypt(encrypted_msg)
 
         return decrypted_msg.decode().rstrip(padding_character)
+
+    #Triple DES
+    @staticmethod
+    def enc_des3(string_to_encrypt,key):
+        hashed_key = HachageHelper.hash('md5',key)
+        cipher = DES3.new(hashed_key[:16])
+        padded_private_msg = string_to_encrypt + (padding_character * ((16-len(string_to_encrypt)) % 16))
+        encrypted_msg = cipher.encrypt(padded_private_msg)
+        encoded_encrypted_msg = base64.b64encode(encrypted_msg)
+
+        return encoded_encrypted_msg.decode()
+
+    @staticmethod
+    def dec_des3(string_to_decrypt,key):
+        hashed_key = HachageHelper.hash('md5',key)
+        cipher = DES3.new(hashed_key[:16])
+        encrypted_msg = base64.b64decode(string_to_decrypt.encode())
+        decrypted_msg = cipher.decrypt(encrypted_msg)
+
+        return decrypted_msg.decode().rstrip(padding_character)
+
 
     #BLOWFISH
     @staticmethod
