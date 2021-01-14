@@ -1,5 +1,6 @@
 import hashlib
 
+# we used hashlib instead of pycrypto because it offers more options for hashing
 
 class HachageHelper:
 

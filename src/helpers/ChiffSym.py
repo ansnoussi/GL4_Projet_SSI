@@ -1,5 +1,5 @@
 from src.helpers.hachage import HachageHelper
-from Crypto.Cipher import AES, DES, DES3, Blowfish, CAST
+from Crypto.Cipher import AES, DES, DES3, Blowfish, CAST, XOR
 import base64
 
 ALGOS = ["AES", "DES", "Triple DES", "Blowfish", "CAST", "XOR"]
@@ -154,8 +154,16 @@ class ChiffSymHelper:
     #XOR
     @staticmethod
     def enc_xor(string_to_encrypt,key):
-        return "0"
+        cipher = XOR.new(key)
+        encrypted_msg = cipher.encrypt(string_to_encrypt)
+        encoded_encrypted_msg = base64.b64encode(encrypted_msg)
+
+        return encoded_encrypted_msg.decode()
 
     @staticmethod
     def dec_xor(string_to_decrypt,key):
-        return "1"
+        cipher = XOR.new(key)
+        encrypted_msg = base64.b64decode(string_to_decrypt.encode())
+        decrypted_msg = cipher.decrypt(encrypted_msg)
+
+        return decrypted_msg.decode()
