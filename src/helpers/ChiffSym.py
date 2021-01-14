@@ -116,7 +116,7 @@ class ChiffSymHelper:
     @staticmethod
     def enc_blowfish(string_to_encrypt,key):
         cipher = Blowfish.new(key)
-        padded_private_msg = string_to_encrypt + (padding_character * ((16-len(string_to_encrypt)) % 16))
+        padded_private_msg = string_to_encrypt + (padding_character * ((8-len(string_to_encrypt)) % 8))
         encrypted_msg = cipher.encrypt(padded_private_msg)
         encoded_encrypted_msg = base64.b64encode(encrypted_msg)
 
