@@ -26,7 +26,7 @@ class ChiffSym:
             return "Something went wrong"
 
     @staticmethod
-    def decrypt(algo, msg):
+    def decrypt(algo, msg, key):
         options = {
            "AES" : ChiffSym.dec_aes,
            "DES" : ChiffSym.dec_des,
@@ -38,7 +38,7 @@ class ChiffSym:
            "XOR" : ChiffSym.dec_xor,
         }
         if algo in ALGOS :
-            return options[algo](msg)
+            return options[algo](msg, key)
         else :
             return "Something went wrong"
 
