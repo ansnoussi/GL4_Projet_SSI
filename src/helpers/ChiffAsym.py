@@ -1,32 +1,30 @@
 from Crypto.PublicKey import ElGamal
 # docs : https://www.dlitz.net/software/pycrypto/api/current/
 
-ALGOS = ["RSA", "DSA", "ElGamal"]
+ALGOS = ["RSA", "ElGamal"]
 
-class ChiffSym:
+class ChiffSymHelper:
 
     @staticmethod
     def getAvailable():
         return ALGOS
 
     @staticmethod
-    def encrypt(algo, msg):
+    def encrypt(algo, msg, key):
         options = {
-           "RSA" : ChiffSym.enc_rsa,
-           "DSA" : ChiffSym.enc_dsa,
-           "ElGamal" : ChiffSym.enc_elgamal,
+           "RSA" : ChiffSymHelper.enc_rsa,
+           "ElGamal" : ChiffSymHelper.enc_elgamal,
         }
         if algo in ALGOS :
-            return options[algo](msg)
+            return options[algo](msg, key)
         else :
             return "Something went wrong"
 
     @staticmethod
     def decrypt(algo, msg, key):
         options = {
-           "RSA" : ChiffSym.dec_rsa,
-           "DSA" : ChiffSym.dec_dsa,
-           "ElGamal" : ChiffSym.dec_elgamal,
+           "RSA" : ChiffSymHelper.dec_rsa,
+           "ElGamal" : ChiffSymHelper.dec_elgamal,
         }
         if algo in ALGOS :
             return options[algo](msg, key)
@@ -40,16 +38,8 @@ class ChiffSym:
 
     @staticmethod
     def dec_rsa(string_to_decrypt,key):
-        treturn "1"
+        return "1"
 
-    #DSA
-    @staticmethod
-    def enc_dsa(string_to_encrypt,key):
-        return "0"
-
-    @staticmethod
-    def dec_dsa(string_to_decrypt,key):
-        treturn "1"
 
     #ElGamal
     @staticmethod
@@ -58,4 +48,4 @@ class ChiffSym:
 
     @staticmethod
     def dec_elgamal(string_to_decrypt,key):
-        treturn "1"
+        return "1"
