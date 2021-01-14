@@ -10,24 +10,42 @@ class ChiffSymHelper:
         return ALGOS
 
     @staticmethod
-    def encrypt(algo, msg, key):
-        options = {
+    def encrypt(algo, mode, msg, key):
+        sign_options = {
+           "RSA" : ChiffSymHelper.sign_rsa,
+           "ElGamal" : ChiffSymHelper.sign_elgamal,
+        }
+        encrypt_options = {
            "RSA" : ChiffSymHelper.enc_rsa,
            "ElGamal" : ChiffSymHelper.enc_elgamal,
         }
         if algo in ALGOS :
-            return options[algo](msg, key)
+            if mode == "sign" :
+                return sing_options[algo](msg, key)
+            elif mode == "encrypt" :
+                return encrypt_options[algo](msg, key)
+            else :
+                return "unknown mode"
         else :
             return "Something went wrong"
 
     @staticmethod
     def decrypt(algo, msg, key):
-        options = {
+        sign_options = {
+           "RSA" : ChiffSymHelper.verif_sign_rsa,
+           "ElGamal" : ChiffSymHelper.verif_sign_elgamal,
+        }
+        encrypt_options = {
            "RSA" : ChiffSymHelper.dec_rsa,
            "ElGamal" : ChiffSymHelper.dec_elgamal,
         }
         if algo in ALGOS :
-            return options[algo](msg, key)
+            if mode == "sign" :
+                return sign_options[algo](msg, key)
+            elif mode == "encrypt" :
+                return encrypt_options[algo](msg, key)
+            else :
+                return "unknown mode"
         else :
             return "Something went wrong"
 
@@ -45,7 +63,7 @@ class ChiffSymHelper:
         return "aa"
     
     @staticmethod
-    def write_key_pairs():
+    def save_key_pairs(pub, priv):
         return True
 
 
@@ -62,12 +80,31 @@ class ChiffSymHelper:
     def dec_rsa(string_to_decrypt,key):
         return "1"
 
+    @staticmethod
+    def sign_rsa(string_to_decrypt,key):
+        return "1"
+    
+    @staticmethod
+    def verif_sign_rsa(string_to_decrypt,key):
+        return "1"
 
     #ElGamal
+    @staticmethod
+    def gen_elgamal_key():
+        return ["PUB", "PRIV"]
+
     @staticmethod
     def enc_elgamal(string_to_encrypt,key):
         return "0"
 
     @staticmethod
     def dec_elgamal(string_to_decrypt,key):
+        return "1"
+
+    @staticmethod
+    def sign_elgamal(string_to_decrypt,key):
+        return "1"
+    
+    @staticmethod
+    def verif_sign_elgamal(string_to_decrypt,key):
         return "1"
