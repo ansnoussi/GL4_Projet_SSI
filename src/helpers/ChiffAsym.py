@@ -300,8 +300,11 @@ class ChiffAsymHelper:
             k = random.StrongRandom().randint(1,int(key.p)-1)
             if GCD(k,int(key.p)-1)==1: break
 
+        # we transform the hash to long
+        long_h = bytes_to_long(h.hexdigest().encode())
+
         # and now we sign the hash
-        signature = key.sign(h,k)
+        signature = key.sign(long_h,k)
 
         # we get the output as a tuple, so we seperate them to be able to save them to the same file
         out_sig = str(signature[0]) + "\n" + str(signature[1])
@@ -310,7 +313,7 @@ class ChiffAsymHelper:
         cur_timestamp = calendar.timegm(time.gmtime())
         # we save the signature
         file_out = open(str(cur_timestamp) + ".signed", "wb")
-        file_out.write(base64.b64encode(out_sig))
+        file_out.write(base64.b64encode(out_sig.encode()))
         file_out.close()
         # we save the original msg
         hash_out = open(str(str(cur_timestamp) + ".msg"), "wb")
@@ -340,6 +343,14 @@ class ChiffAsymHelper:
         # we decode it
         sig = base64.b64decode(encoded_sig)
 
+        sig_strings = sig.decode().split("\n")
+
+        sig_parts = []
+        for c in sig_strings:
+            sig_parts.append(int(c))
+
+        final_sig = tuple(sig_parts)
+
         # we get the msg file
         hash_file_name = string_to_verif_sig.split(".")[0] + ".msg"
         hash_file = open(hash_file_name, "rb").read()
@@ -347,10 +358,12 @@ class ChiffAsymHelper:
         decode_hash = base64.b64decode(hash_file)
 
         # we create the hash again
-        h = SHA256.new(decode_hash).hexdigest()
+        h = SHA256.new(decode_hash)
+
+        long_h = bytes_to_long(h.hexdigest().encode())
 
         #then we verify the sig
-        if key.verify(h,sig):
+        if key.verify(long_h,final_sig):
             return  "The signature is valid."
         else:
             return "The signature is not valid."
