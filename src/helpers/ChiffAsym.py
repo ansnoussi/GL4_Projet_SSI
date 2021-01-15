@@ -63,7 +63,7 @@ class ChiffAsymHelper:
     @staticmethod
     def enc_rsa(string_to_encrypt,key,pwd):
         #first we check if key exists:
-        key_name = "rsa_" + key + ".bin"
+        key_name = "rsa_" + key + ".key"
         if path.exists(key_name):
 
             #we import the key
@@ -83,11 +83,11 @@ class ChiffAsymHelper:
         encrypted_msg = cipher_rsa.encrypt(str.encode(string_to_encrypt))
         # now we save to a file
         cur_timestamp = calendar.timegm(time.gmtime())
-        file_out = open(str(str(cur_timestamp) + ".enc"), "wb")
+        file_out = open(str(str(cur_timestamp) + ".encrypted"), "wb")
         file_out.write(base64.b64encode(encrypted_msg))
         file_out.close()
 
-        return "saved to file : " + str(cur_timestamp) + ".enc"
+        return "saved to file : " + str(cur_timestamp) + ".encrypted"
         
 
         return "0"
@@ -101,13 +101,10 @@ class ChiffAsymHelper:
         # then we open the encoded msg
         encoded_msg = open(file_to_decrypt, "rb").read()
         msg = base64.b64decode(encoded_msg)
-
-
         cipher_rsa = PKCS1_OAEP.new(key)
 
         #then we decrypt the msg
         decrypted_msg = cipher_rsa.decrypt(msg)
-
 
         return decrypted_msg.decode()
 
