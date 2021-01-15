@@ -5,6 +5,7 @@ from Cryptodome.Signature import pkcs1_15
 from Cryptodome.Hash import SHA256, SHA
 from Cryptodome.Random import get_random_bytes, random
 from Cryptodome.Util.number import GCD
+from Crypto.Util.number import bytes_to_long, long_to_bytes
 from os import path
 import calendar
 import time
@@ -216,7 +217,7 @@ class ChiffAsymHelper:
         
         # we encrypt our data
         # returns a tuple : u v
-        encrypted_msg = key.encrypt(string_to_encrypt.encode(), k)
+        encrypted_msg = key.encrypt(bytes_to_long(string_to_encrypt.encode()), k)
 
         # we seperate u and v by "\n" so we can save them in the same file
         out_msg = str(encrypted_msg[0]) + "\n" + str(encrypted_msg[1])
@@ -251,13 +252,13 @@ class ChiffAsymHelper:
 
         uv= []
         for c in uv_strings:
-            uv.append(c.encode())
+            uv.append(int(c))
 
         # and now we decrypt it
 
         d = key.decrypt(tuple(uv))
 
-        return d
+        return long_to_bytes(d).decode()
 
 
     @staticmethod
