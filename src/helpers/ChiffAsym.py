@@ -1,5 +1,7 @@
 from Cryptodome.PublicKey import RSA, ElGamal
 from Cryptodome.Cipher import PKCS1_OAEP
+from Cryptodome.Signature import pkcs1_15
+from Cryptodome.Hash import SHA256
 from os import path
 import calendar
 import time
@@ -31,7 +33,7 @@ class ChiffAsymHelper:
         }
         if algo in ALGOS :
             if mode == 1 :
-                return sing_options[algo](msg, key, pwd)
+                return sign_options[algo](msg, key, pwd)
             elif mode == 0 :
                 return encrypt_options[algo](msg, key, pwd)
             else :
@@ -88,9 +90,6 @@ class ChiffAsymHelper:
         file_out.close()
 
         return "saved to file : " + str(cur_timestamp) + ".encrypted"
-        
-
-        return "0"
 
     @staticmethod
     def dec_rsa(file_to_decrypt,key,pwd):
@@ -109,8 +108,36 @@ class ChiffAsymHelper:
         return decrypted_msg.decode()
 
     @staticmethod
-    def sign_rsa(string_to_decrypt,key,pwd):
-        return "1"
+    def sign_rsa(string_to_sign,key,pwd):
+        #first we check if key exists:
+        key_name = "rsa_" + key + ".key"
+        if path.exists(key_name):
+
+            #we import the key
+            encoded_key = open(key_name, "rb").read()
+            key = RSA.import_key(encoded_key, passphrase=pwd)
+        else:
+            #we create a new key
+            key = RSA.generate(2048)
+            encrypted_key = key.export_key(passphrase=pwd, pkcs=8,protection="scryptAndAES128-CBC")
+            #then we save the key
+            file_out = open(key_name, "wb")
+            file_out.write(encrypted_key)
+            file_out.close()
+
+        # we hash the msg to sign
+        h = SHA256.new(string_to_sign.encode())
+
+        # and now we sign the hash
+        signature = pkcs1_15.new(key).sign(h)
+
+        # now we save to a file
+        cur_timestamp = calendar.timegm(time.gmtime())
+        file_out = open(str(str(cur_timestamp) + ".signed"), "wb")
+        file_out.write(base64.b64encode(signature))
+        file_out.close()
+
+        return "saved to file : " + str(cur_timestamp) + ".signed"
     
     @staticmethod
     def verif_sign_rsa(string_to_decrypt,key,pwd):
