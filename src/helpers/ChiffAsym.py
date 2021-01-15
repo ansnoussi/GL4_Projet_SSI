@@ -1,4 +1,4 @@
-from Crypto.PublicKey import ElGamal
+from Cryptodome.PublicKey import RSA, ElGamal
 # docs : https://www.dlitz.net/software/pycrypto/api/current/
 
 ALGOS = ["RSA", "ElGamal"]
