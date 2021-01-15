@@ -1,7 +1,7 @@
 from Cryptodome.PublicKey import RSA, ElGamal
 from Cryptodome.Cipher import PKCS1_OAEP
 from Cryptodome.Signature import pkcs1_15
-from Cryptodome.Hash import SHA256
+from Cryptodome.Hash import SHA256, SHA
 from os import path
 import calendar
 import time
@@ -133,15 +133,42 @@ class ChiffAsymHelper:
 
         # now we save to a file
         cur_timestamp = calendar.timegm(time.gmtime())
-        file_out = open(str(str(cur_timestamp) + ".signed"), "wb")
+        # we save the signature
+        file_out = open(str(cur_timestamp) + ".signed", "wb")
         file_out.write(base64.b64encode(signature))
         file_out.close()
+        # we save the original msg
+        hash_out = open(str(str(cur_timestamp) + ".msg"), "wb")
+        hash_out.write(base64.b64encode(string_to_sign.encode()))
+        hash_out.close()
 
-        return "saved to file : " + str(cur_timestamp) + ".signed"
+        return "saved signature to file : " + str(cur_timestamp) + ".signed " +  "and the message to file : " + str(cur_timestamp) + ".msg\n" 
     
     @staticmethod
-    def verif_sign_rsa(string_to_decrypt,key,pwd):
-        return "1"
+    def verif_sign_rsa(string_to_verif_sig,key,pwd):
+        #first we import the key
+        encoded_key = open(key, "rb").read()
+        key = RSA.import_key(encoded_key, passphrase=pwd)
+
+        # we get the signature
+        encoded_sig = open(string_to_verif_sig, "rb").read()
+        sig = base64.b64decode(encoded_sig)
+
+        # we get the msg
+        hash_file_name = string_to_verif_sig.split(".")[0] + ".msg"
+        hash_file = open(hash_file_name, "rb").read()
+        decode_hash = base64.b64decode(hash_file)
+
+        # we create the hash
+        h = SHA256.new(decode_hash)
+
+
+        #then we verify the sig
+        try:
+            verif = pkcs1_15.new(key).verify(h,sig)
+            return  "The signature is valid."
+        except (ValueError, TypeError):
+            return "The signature is not valid."
 
     #ElGamal
     @staticmethod

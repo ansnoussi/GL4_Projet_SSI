@@ -12,7 +12,7 @@ class DechiffAsymForm(npyscreen.FormWithMenus, npyscreen.ActionFormMinimal):
         # just for convenience so we don't have to keep writing Options.options
         options = self.Options.options
 
-        self.inFile = self.add(npyscreen.TitleFilenameCombo,name="Choisir votre message d'entree", label=True)
+        self.inFile = self.add(npyscreen.TitleFilenameCombo,name="Choisir votre message d'entree (.encrypted ou .signed)", label=True)
         options.append(npyscreen.OptionSingleChoice('Type de chiffrement', choices=ChiffAsymHelper.getAvailable()))
 
         self.add(npyscreen.OptionListDisplay, name="Option List", 
