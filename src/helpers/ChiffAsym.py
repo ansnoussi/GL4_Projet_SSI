@@ -1,10 +1,16 @@
 from Cryptodome.PublicKey import RSA, ElGamal
+from Cryptodome.Cipher import PKCS1_OAEP
+from os import path
+import calendar
+import time
+import base64
+
+
 # docs : https://www.dlitz.net/software/pycrypto/api/current/
 
 ALGOS = ["RSA", "ElGamal"]
 
 # modes :  0 (encrypt) , 1 (sign)
-# we will use AES to encrypt private key
 
 
 class ChiffAsymHelper:
@@ -16,12 +22,12 @@ class ChiffAsymHelper:
     @staticmethod
     def encrypt(algo, mode, msg, key, pwd):
         sign_options = {
-           "RSA" : ChiffSymHelper.sign_rsa,
-           "ElGamal" : ChiffSymHelper.sign_elgamal,
+           "RSA" : ChiffAsymHelper.sign_rsa,
+           "ElGamal" : ChiffAsymHelper.sign_elgamal,
         }
         encrypt_options = {
-           "RSA" : ChiffSymHelper.enc_rsa,
-           "ElGamal" : ChiffSymHelper.enc_elgamal,
+           "RSA" : ChiffAsymHelper.enc_rsa,
+           "ElGamal" : ChiffAsymHelper.enc_elgamal,
         }
         if algo in ALGOS :
             if mode == 1 :
@@ -36,12 +42,12 @@ class ChiffAsymHelper:
     @staticmethod
     def decrypt(algo, mode, msg, key, pwd):
         sign_options = {
-           "RSA" : ChiffSymHelper.verif_sign_rsa,
-           "ElGamal" : ChiffSymHelper.verif_sign_elgamal,
+           "RSA" : ChiffAsymHelper.verif_sign_rsa,
+           "ElGamal" : ChiffAsymHelper.verif_sign_elgamal,
         }
         encrypt_options = {
-           "RSA" : ChiffSymHelper.dec_rsa,
-           "ElGamal" : ChiffSymHelper.dec_elgamal,
+           "RSA" : ChiffAsymHelper.dec_rsa,
+           "ElGamal" : ChiffAsymHelper.dec_elgamal,
         }
         if algo in ALGOS :
             if mode == 1 :
@@ -53,62 +59,75 @@ class ChiffAsymHelper:
         else :
             return "Something went wrong"
 
-    #GENERAL USE
-    @staticmethod
-    def enc_key(key_to_enc , key):
-        return "0"
-    
-    @staticmethod
-    def dec_key(key_to_dec , key):
-        return "1"
-
-    @staticmethod
-    def read_priv_key(file_name):
-        return "aa"
-    
-    @staticmethod
-    def save_key_pairs(pub, priv):
-        return True
-
-
     #RSA
     @staticmethod
-    def gen_rsa_key():
-        return ["PUB", "PRIV"]
+    def enc_rsa(string_to_encrypt,key,pwd):
+        #first we check if key exists:
+        key_name = "rsa_" + key + ".bin"
+        if path.exists(key_name):
 
-    @staticmethod
-    def enc_rsa(string_to_encrypt,key):
+            #we import the key
+            encoded_key = open(key_name, "rb").read()
+            key = RSA.import_key(encoded_key, passphrase=pwd)
+        else:
+            #we create a new key
+            key = RSA.generate(2048)
+            encrypted_key = key.export_key(passphrase=pwd, pkcs=8,protection="scryptAndAES128-CBC")
+            #then we save the key
+            file_out = open(key_name, "wb")
+            file_out.write(encrypted_key)
+            file_out.close()
+
+        # now we encrypt using the key
+        cipher_rsa = PKCS1_OAEP.new(key)
+        encrypted_msg = cipher_rsa.encrypt(str.encode(string_to_encrypt))
+        # now we save to a file
+        cur_timestamp = calendar.timegm(time.gmtime())
+        file_out = open(str(str(cur_timestamp) + ".enc"), "wb")
+        file_out.write(base64.b64encode(encrypted_msg))
+        file_out.close()
+
+        return "saved to file : " + str(cur_timestamp) + ".enc"
+        
+
         return "0"
 
     @staticmethod
-    def dec_rsa(string_to_decrypt,key):
-        return "1"
+    def dec_rsa(string_to_decrypt,key,pwd):
+        #first we import the key and init the cipher
+        key_name = "rsa_" + key + ".bin"
+        encoded_key = open(key_name, "rb").read()
+        key = RSA.import_key(encoded_key, passphrase=pwd)
+
+        cipher_rsa = PKCS1_OAEP.new(key)
+
+        #then we decrypt the msg
+        decrypted_msg = cipher_rsa.decrypt(string_to_decrypt)
+
+
+        return "0"
 
     @staticmethod
-    def sign_rsa(string_to_decrypt,key):
+    def sign_rsa(string_to_decrypt,key,pwd):
         return "1"
     
     @staticmethod
-    def verif_sign_rsa(string_to_decrypt,key):
+    def verif_sign_rsa(string_to_decrypt,key,pwd):
         return "1"
 
     #ElGamal
     @staticmethod
-    def gen_elgamal_key():
-        return ["PUB", "PRIV"]
-
-    @staticmethod
-    def enc_elgamal(string_to_encrypt,key):
+    def enc_elgamal(string_to_encrypt,key,pwd):
         return "0"
 
     @staticmethod
-    def dec_elgamal(string_to_decrypt,key):
+    def dec_elgamal(string_to_decrypt,key,pwd):
         return "1"
 
     @staticmethod
-    def sign_elgamal(string_to_decrypt,key):
+    def sign_elgamal(string_to_decrypt,key,pwd):
         return "1"
     
     @staticmethod
-    def verif_sign_elgamal(string_to_decrypt,key):
+    def verif_sign_elgamal(string_to_decrypt,key,pwd):
         return "1"
