@@ -1,0 +1,4 @@
+chardet==4.0.0
+npyscreen==4.10.5
+pycrypto==2.6.1
+pycryptodomex==3.9.9
