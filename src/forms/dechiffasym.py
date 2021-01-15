@@ -1,5 +1,5 @@
 import npyscreen
-from src.helpers.ChiffSym import ChiffSymHelper
+from src.helpers.ChiffAsym import ChiffAsymHelper
 
 class DechiffAsymForm(npyscreen.FormWithMenus, npyscreen.ActionFormMinimal):
     def create(self):
@@ -13,18 +13,18 @@ class DechiffAsymForm(npyscreen.FormWithMenus, npyscreen.ActionFormMinimal):
         options = self.Options.options
         
         options.append(npyscreen.OptionMultiFreeText('Votre Message', value=''))
-        options.append(npyscreen.OptionSingleChoice('Type de chiffrement', choices=ChiffSymHelper.getAvailable()))
-
+        options.append(npyscreen.OptionSingleChoice('Type de chiffrement', choices=ChiffAsymHelper.getAvailable()))
 
         self.add(npyscreen.OptionListDisplay, name="Option List", 
                 values = options, 
                 scroll_exit=True,
                 max_height=2)
-        self.wordListFile = self.add(npyscreen.TitleFilenameCombo,name="Choisir votre clef prive", label=True)
-        self.pwd = self.add(npyscreen.TitlePassword, name = "Mot de passe (pour cle prive)")
+        self.keyFile = self.add(npyscreen.TitleFilenameCombo,name="Choisir votre clef prive", label=True)
+        self.pwd = self.add(npyscreen.TitlePassword, name = "Mot de passe (pour clef prive)")
+        self.mode = self.add(npyscreen.TitleSelectOne, max_height=4, value = [1,], name="Pick Mode",values = ["Decrypt","Verify-Sign"], scroll_exit=True)
         
 
-        self.output = self.add(npyscreen.BoxTitle, name="Output:", max_height=4)
+        self.output = self.add(npyscreen.BoxTitle, name="Output:", max_height=6)
         self.output.values = []
 
 
@@ -43,4 +43,9 @@ class DechiffAsymForm(npyscreen.FormWithMenus, npyscreen.ActionFormMinimal):
     def afterEditing(self):
         pass
     def on_ok(self):
-        self.output.values = [ChiffSymHelper.encrypt(self.Options.get("Type de chiffrement").value[0], self.Options.get("Votre Message").value, self.pwd.value)]
+        self.output.values = [ChiffAsymHelper.encrypt(
+            self.Options.get("Type de chiffrement").value[0], 
+            self.mode.value[0] , 
+            self.Options.get("Votre Message").value, 
+            self.keyFile.value,
+            self.pwd.value)]

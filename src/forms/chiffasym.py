@@ -1,5 +1,5 @@
 import npyscreen
-from src.helpers.ChiffSym import ChiffSymHelper
+from src.helpers.ChiffAsym import ChiffAsymHelper
 
 class ChiffAsymForm(npyscreen.FormWithMenus, npyscreen.ActionFormMinimal):
     def create(self):
@@ -13,17 +13,19 @@ class ChiffAsymForm(npyscreen.FormWithMenus, npyscreen.ActionFormMinimal):
         options = self.Options.options
         
         options.append(npyscreen.OptionMultiFreeText('Votre Message', value=''))
-        options.append(npyscreen.OptionSingleChoice('Type de chiffrement', choices=ChiffSymHelper.getAvailable()))
+        options.append(npyscreen.OptionSingleChoice('Type de chiffrement', choices=ChiffAsymHelper.getAvailable()))
+        options.append(npyscreen.OptionMultiFreeText('Nom de votre clef', value=''))
 
 
         self.add(npyscreen.OptionListDisplay, name="Option List", 
                 values = options, 
                 scroll_exit=True,
-                max_height=2)
-        self.pwd = self.add(npyscreen.TitlePassword, name = "Mot de passe (pour cle prive)")
+                max_height=3)
+        self.pwd = self.add(npyscreen.TitlePassword, name = "Mot de passe (pour clef prive)")
+        self.mode = self.add(npyscreen.TitleSelectOne, max_height=4, value = [1,], name="Pick Mode",values = ["Encrypt","Sign"], scroll_exit=True)
         
 
-        self.output = self.add(npyscreen.BoxTitle, name="Output:", max_height=4)
+        self.output = self.add(npyscreen.BoxTitle, name="Output:", max_height=6)
         self.output.values = []
 
 
@@ -42,4 +44,9 @@ class ChiffAsymForm(npyscreen.FormWithMenus, npyscreen.ActionFormMinimal):
     def afterEditing(self):
         pass
     def on_ok(self):
-        self.output.values = [ChiffSymHelper.encrypt(self.Options.get("Type de chiffrement").value[0], self.Options.get("Votre Message").value, self.pwd.value)]
+        self.output.values = [ChiffAsymHelper.encrypt(
+            self.Options.get("Type de chiffrement").value[0], 
+            self.mode.value[0] , 
+            self.Options.get("Votre Message").value, 
+            self.Options.get("Nom de votre clef").value, 
+            self.pwd.value)]

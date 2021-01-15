@@ -3,14 +3,18 @@ from Cryptodome.PublicKey import RSA, ElGamal
 
 ALGOS = ["RSA", "ElGamal"]
 
-class ChiffSymHelper:
+# modes :  0 (encrypt) , 1 (sign)
+# we will use AES to encrypt private key
+
+
+class ChiffAsymHelper:
 
     @staticmethod
     def getAvailable():
         return ALGOS
 
     @staticmethod
-    def encrypt(algo, mode, msg, key):
+    def encrypt(algo, mode, msg, key, pwd):
         sign_options = {
            "RSA" : ChiffSymHelper.sign_rsa,
            "ElGamal" : ChiffSymHelper.sign_elgamal,
@@ -20,17 +24,17 @@ class ChiffSymHelper:
            "ElGamal" : ChiffSymHelper.enc_elgamal,
         }
         if algo in ALGOS :
-            if mode == "sign" :
-                return sing_options[algo](msg, key)
-            elif mode == "encrypt" :
-                return encrypt_options[algo](msg, key)
+            if mode == 1 :
+                return sing_options[algo](msg, key, pwd)
+            elif mode == 0 :
+                return encrypt_options[algo](msg, key, pwd)
             else :
                 return "unknown mode"
         else :
             return "Something went wrong"
 
     @staticmethod
-    def decrypt(algo, msg, key):
+    def decrypt(algo, mode, msg, key, pwd):
         sign_options = {
            "RSA" : ChiffSymHelper.verif_sign_rsa,
            "ElGamal" : ChiffSymHelper.verif_sign_elgamal,
@@ -40,10 +44,10 @@ class ChiffSymHelper:
            "ElGamal" : ChiffSymHelper.dec_elgamal,
         }
         if algo in ALGOS :
-            if mode == "sign" :
-                return sign_options[algo](msg, key)
-            elif mode == "encrypt" :
-                return encrypt_options[algo](msg, key)
+            if mode == 1 :
+                return sign_options[algo](msg, key, pwd)
+            elif mode == 0 :
+                return encrypt_options[algo](msg, key, pwd)
             else :
                 return "unknown mode"
         else :
