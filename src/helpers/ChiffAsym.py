@@ -93,19 +93,23 @@ class ChiffAsymHelper:
         return "0"
 
     @staticmethod
-    def dec_rsa(string_to_decrypt,key,pwd):
+    def dec_rsa(file_to_decrypt,key,pwd):
         #first we import the key and init the cipher
-        key_name = "rsa_" + key + ".bin"
-        encoded_key = open(key_name, "rb").read()
+        encoded_key = open(key, "rb").read()
         key = RSA.import_key(encoded_key, passphrase=pwd)
+
+        # then we open the encoded msg
+        encoded_msg = open(file_to_decrypt, "rb").read()
+        msg = base64.b64decode(encoded_msg)
+
 
         cipher_rsa = PKCS1_OAEP.new(key)
 
         #then we decrypt the msg
-        decrypted_msg = cipher_rsa.decrypt(string_to_decrypt)
+        decrypted_msg = cipher_rsa.decrypt(msg)
 
 
-        return "0"
+        return decrypted_msg.decode()
 
     @staticmethod
     def sign_rsa(string_to_decrypt,key,pwd):

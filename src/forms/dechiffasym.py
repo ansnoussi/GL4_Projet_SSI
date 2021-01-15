@@ -11,8 +11,8 @@ class DechiffAsymForm(npyscreen.FormWithMenus, npyscreen.ActionFormMinimal):
         self.Options = npyscreen.OptionList()
         # just for convenience so we don't have to keep writing Options.options
         options = self.Options.options
-        
-        options.append(npyscreen.OptionMultiFreeText('Votre Message', value=''))
+
+        self.inFile = self.add(npyscreen.TitleFilenameCombo,name="Choisir votre message d'entree", label=True)
         options.append(npyscreen.OptionSingleChoice('Type de chiffrement', choices=ChiffAsymHelper.getAvailable()))
 
         self.add(npyscreen.OptionListDisplay, name="Option List", 
@@ -43,9 +43,9 @@ class DechiffAsymForm(npyscreen.FormWithMenus, npyscreen.ActionFormMinimal):
     def afterEditing(self):
         pass
     def on_ok(self):
-        self.output.values = [ChiffAsymHelper.encrypt(
+        self.output.values = [ChiffAsymHelper.decrypt(
             self.Options.get("Type de chiffrement").value[0], 
             self.mode.value[0] , 
-            self.Options.get("Votre Message").value, 
+            self.inFile.value, 
             self.keyFile.value,
             self.pwd.value)]
