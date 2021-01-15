@@ -2,15 +2,17 @@ from Cryptodome.PublicKey import RSA, ElGamal
 from Cryptodome.Cipher import PKCS1_OAEP
 from Cryptodome.Signature import pkcs1_15
 from Cryptodome.Hash import SHA256, SHA
+from Cryptodome.Random import get_random_bytes
 from os import path
 import calendar
 import time
 import base64
-
-
-# docs : https://www.dlitz.net/software/pycrypto/api/current/
+from src.helpers.ChiffSym import ChiffSymHelper
 
 ALGOS = ["RSA", "ElGamal"]
+
+# specific to ElGamal algo
+comps = ('p', 'g', 'y', 'x')
 
 # modes :  0 (encrypt) , 1 (sign)
 
@@ -170,10 +172,39 @@ class ChiffAsymHelper:
         except (ValueError, TypeError):
             return "The signature is not valid."
 
+
+
+
     #ElGamal
     @staticmethod
     def enc_elgamal(string_to_encrypt,key,pwd):
-        return "0"
+        #first we check if key exists:
+        key_name = "elgamal_" + key + ".key"
+        if path.exists(key_name):
+            #we import the key
+            b64encoded_encrypted_key = open(key_name, "rb").read()
+            _key = ChiffSymHelper.decrypt("AES" , b64encoded_encrypted_key.decode() , pwd)
+            
+            clean_key_comps = []
+            key_comps = _key.split("\n")
+            for c in key_comps:
+                clean_key_comps.append(int(c.split('=')[1].strip()))
+
+            key = ElGamal.construct(tuple(clean_key_comps))
+        else:
+            # we create a new key
+            # we could use 2048 but it takes a LONG time
+            key = ElGamal.generate(256, get_random_bytes)
+            out = "\n".join(["{} = {}".format(comp, getattr(key, comp)) for comp in comps])
+            encrypted_key = ChiffSymHelper.encrypt("AES" , out , pwd)
+            #then we save the key
+            file_out = open(key_name, "wb")
+            file_out.write(encrypted_key.encode())
+            file_out.close()
+
+        return "done"
+
+
 
     @staticmethod
     def dec_elgamal(string_to_decrypt,key,pwd):
