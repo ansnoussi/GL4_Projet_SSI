@@ -10,6 +10,7 @@ import calendar
 import time
 import base64
 from src.helpers.ChiffSym import ChiffSymHelper
+from src.helpers.codage import CodageHelper
 
 ALGOS = ["RSA", "ElGamal"]
 
@@ -183,21 +184,26 @@ class ChiffAsymHelper:
         if path.exists(key_name):
             #we import the key
             b64encoded_encrypted_key = open(key_name, "rb").read()
+            #we decrypt it using the password provided
             _key = ChiffSymHelper.decrypt("AES" , b64encoded_encrypted_key.decode() , pwd)
             
+            # we extract the components of the key (p,g,y,x)
             clean_key_comps = []
             key_comps = _key.split("\n")
             for c in key_comps:
                 clean_key_comps.append(int(c.split('=')[1].strip()))
 
+            #we construct a new key using these components
             key = ElGamal.construct(tuple(clean_key_comps))
         else:
             # we create a new key
             # we could use 2048 but it takes a LONG time
             key = ElGamal.generate(256, get_random_bytes)
+            # "out" is a string containing the components of the key like follows: p = 23 \n g = 4 ...
             out = "\n".join(["{} = {}".format(comp, getattr(key, comp)) for comp in comps])
+            # we encrypt that string using AES
             encrypted_key = ChiffSymHelper.encrypt("AES" , out , pwd)
-            #then we save the key
+            #then we it to a file
             file_out = open(key_name, "wb")
             file_out.write(encrypted_key.encode())
             file_out.close()
@@ -212,10 +218,10 @@ class ChiffAsymHelper:
         # returns a tuple : u v
         encrypted_msg = key.encrypt(string_to_encrypt.encode(), k)
 
-        # we get msg ready for export
+        # we seperate u and v by "\n" so we can save them in the same file
         out_msg = str(encrypted_msg[0]) + "\n" + str(encrypted_msg[1])
 
-        # now we save to a file
+        # now we save the encrypted msg to a file
         cur_timestamp = calendar.timegm(time.gmtime())
         file_out = open(str(cur_timestamp) + ".encrypted", "wb")
         file_out.write(base64.b64encode(out_msg.encode()))
@@ -259,23 +265,28 @@ class ChiffAsymHelper:
         #first we check if key exists:
         key_name = "elgamal_" + key + ".key"
         if path.exists(key_name):
-            #we import the key
+            # we import the key
             b64encoded_encrypted_key = open(key_name, "rb").read()
+            # we decrypt it using the password we have
             _key = ChiffSymHelper.decrypt("AES" , b64encoded_encrypted_key.decode() , pwd)
             
+            # we extract the components of the key, and save them in a tuple
             clean_key_comps = []
             key_comps = _key.split("\n")
             for c in key_comps:
                 clean_key_comps.append(int(c.split('=')[1].strip()))
 
+            # we construct a new key using the components we got from the file
             key = ElGamal.construct(tuple(clean_key_comps))
         else:
             # we create a new key
             # we could use 2048 but it takes a LONG time
             key = ElGamal.generate(256, get_random_bytes)
+            # "out" is a string containing the components of the key like follows: p = 23 \n g = 4 ...
             out = "\n".join(["{} = {}".format(comp, getattr(key, comp)) for comp in comps])
+            # we encrypt the string "out"
             encrypted_key = ChiffSymHelper.encrypt("AES" , out , pwd)
-            #then we save the key
+            #then we save it
             file_out = open(key_name, "wb")
             file_out.write(encrypted_key.encode())
             file_out.close()
@@ -291,11 +302,14 @@ class ChiffAsymHelper:
         # and now we sign the hash
         signature = key.sign(h,k)
 
+        # we get the output as a tuple, so we seperate them to be able to save them to the same file
+        out_sig = str(signature[0]) + "\n" + str(signature[1])
+
         # now we save to a file
         cur_timestamp = calendar.timegm(time.gmtime())
         # we save the signature
         file_out = open(str(cur_timestamp) + ".signed", "wb")
-        file_out.write(base64.b64encode(signature))
+        file_out.write(base64.b64encode(out_sig))
         file_out.close()
         # we save the original msg
         hash_out = open(str(str(cur_timestamp) + ".msg"), "wb")
@@ -308,27 +322,31 @@ class ChiffAsymHelper:
     def verif_sign_elgamal(string_to_verif_sig,key,pwd):
         #first we get the key
         b64encoded_encrypted_key = open(key, "rb").read()
+        # we decrypt the key
         _key = ChiffSymHelper.decrypt("AES" , b64encoded_encrypted_key.decode() , pwd)
         
+        # we extract the components of the key
         clean_key_comps = []
         key_comps = _key.split("\n")
         for c in key_comps:
             clean_key_comps.append(int(c.split('=')[1].strip()))
 
+        #we construct a new key with the components we extracted
         key = ElGamal.construct(tuple(clean_key_comps))
 
         # we get the signature
         encoded_sig = open(string_to_verif_sig, "rb").read()
+        # we decode it
         sig = base64.b64decode(encoded_sig)
 
-        # we get the msg
+        # we get the msg file
         hash_file_name = string_to_verif_sig.split(".")[0] + ".msg"
         hash_file = open(hash_file_name, "rb").read()
+        # we decode it
         decode_hash = base64.b64decode(hash_file)
 
-        # we create the hash
-        h = SHA256.new(decode_hash)
-
+        # we create the hash again
+        h = SHA256.new(decode_hash).hexdigest()
 
         #then we verify the sig
         if key.verify(h,sig):
