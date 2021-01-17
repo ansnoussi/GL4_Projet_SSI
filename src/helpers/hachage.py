@@ -6,23 +6,32 @@ class HachageHelper:
 
     @staticmethod
     def getAvailable():
-        return list(hashlib.algorithms_available)
+        try:
+            return list(hashlib.algorithms_available)
+        except:
+            return "Une erreur s'est produite"
 
     @staticmethod
     def hash(algo, msg):
-        h = hashlib.new(algo)
-        b = msg.strip().encode('utf-8')
-        h.update(b)
-        return h.hexdigest()
+        try:
+            h = hashlib.new(algo)
+            b = msg.strip().encode('utf-8')
+            h.update(b)
+            return h.hexdigest()
+        except:
+            return "Une erreur s'est produite, veuillez vérifier vos entrées"
 
     @staticmethod
     def crackHash(algo, hash, wordlist):
-        with open(wordlist) as f:
-            for line in f:
-                h = hashlib.new(algo)
-                line = line.strip().encode()
-                h.update(line)
-                lineHash = h.hexdigest()
-                if lineHash == hash:
-                    return line.decode()
-        return 'not_found'
+        try:
+            with open(wordlist) as f:
+                for line in f:
+                    h = hashlib.new(algo)
+                    line = line.strip().encode()
+                    h.update(line)
+                    lineHash = h.hexdigest()
+                    if lineHash == hash:
+                        return line.decode()
+            return 'not_found'
+        except:
+            return "Une erreur s'est produite, veuillez vérifier vos entrées"
