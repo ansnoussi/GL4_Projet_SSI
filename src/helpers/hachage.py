@@ -31,7 +31,7 @@ class HachageHelper:
                     h.update(line)
                     lineHash = h.hexdigest()
                     if lineHash == hash:
-                        return line.decode()
-            return 'not_found'
+                        return "texte original trouvé: " + line.decode()
+            return 'texte original introuvable'
         except:
             return "Une erreur s'est produite, veuillez vérifier vos entrées"
