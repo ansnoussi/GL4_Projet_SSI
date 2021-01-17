@@ -16,12 +16,12 @@ class HachageForm(npyscreen.FormWithMenus, npyscreen.ActionFormMinimal):
         options.append(npyscreen.OptionSingleChoice('Fonction de hachage', choices=HachageHelper.getAvailable()))
 
 
-        self.add(npyscreen.OptionListDisplay, name="Option List", 
+        self.add(npyscreen.OptionListDisplay, name="Liste d'options", 
                 values = options, 
                 scroll_exit=True,
                 max_height=6)
 
-        self.output = self.add(npyscreen.BoxTitle, name="Output:", max_height=4)
+        self.output = self.add(npyscreen.BoxTitle, name="Sortie de texte:", max_height=4)
         self.output.values = []
 
 

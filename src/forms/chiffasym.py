@@ -17,15 +17,15 @@ class ChiffAsymForm(npyscreen.FormWithMenus, npyscreen.ActionFormMinimal):
         options.append(npyscreen.OptionMultiFreeText('Nom de votre clef', value=''))
 
 
-        self.add(npyscreen.OptionListDisplay, name="Option List", 
+        self.add(npyscreen.OptionListDisplay, name="Liste d'options", 
                 values = options, 
                 scroll_exit=True,
                 max_height=3)
-        self.pwd = self.add(npyscreen.TitlePassword, name = "Mot de passe (pour clef prive)")
-        self.mode = self.add(npyscreen.TitleSelectOne, max_height=4, value = [1,], name="Pick Mode",values = ["Encrypt","Sign"], scroll_exit=True)
+        self.pwd = self.add(npyscreen.TitlePassword, name = "Mot de passe (pour clef privée)")
+        self.mode = self.add(npyscreen.TitleSelectOne, max_height=4, value = [1,], name="Pick Mode",values = ["Crypter","Signer"], scroll_exit=True)
         
 
-        self.output = self.add(npyscreen.BoxTitle, name="Output:", max_height=6)
+        self.output = self.add(npyscreen.BoxTitle, name="Sortie de texte:", max_height=6)
         self.output.values = []
 
 

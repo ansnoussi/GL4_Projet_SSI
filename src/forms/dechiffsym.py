@@ -12,19 +12,19 @@ class DechiffSymForm(npyscreen.FormWithMenus, npyscreen.ActionFormMinimal):
         # just for convenience so we don't have to keep writing Options.options
         options = self.Options.options
         
-        options.append(npyscreen.OptionMultiFreeText('Votre Message (chiffree)', value=''))
+        options.append(npyscreen.OptionMultiFreeText('Votre message chiffré', value=''))
         options.append(npyscreen.OptionSingleChoice('Type de chiffrement', choices=ChiffSymHelper.getAvailable()))
         # options.append(npyscreen.TitlePassword('Votre Mot de passe', value=''))        
 
 
-        self.add(npyscreen.OptionListDisplay, name="Option List", 
+        self.add(npyscreen.OptionListDisplay, name="Liste d'options", 
                 values = options, 
                 scroll_exit=True,
                 max_height=2)
-        self.pwd = self.add(npyscreen.TitlePassword, name = "Password:")
+        self.pwd = self.add(npyscreen.TitlePassword, name = "Mot de passe:")
         
 
-        self.output = self.add(npyscreen.BoxTitle, name="Output:", max_height=4)
+        self.output = self.add(npyscreen.BoxTitle, name="Sortie de texte:", max_height=4)
         self.output.values = []
 
 
@@ -43,4 +43,4 @@ class DechiffSymForm(npyscreen.FormWithMenus, npyscreen.ActionFormMinimal):
     def afterEditing(self):
         pass
     def on_ok(self):
-        self.output.values = [ChiffSymHelper.decrypt(self.Options.get("Type de chiffrement").value[0], self.Options.get("Votre Message (chiffree)").value, self.pwd.value)]
+        self.output.values = [ChiffSymHelper.decrypt(self.Options.get("Type de chiffrement").value[0], self.Options.get("Votre message chiffré").value, self.pwd.value)]

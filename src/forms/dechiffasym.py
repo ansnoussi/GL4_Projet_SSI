@@ -12,19 +12,19 @@ class DechiffAsymForm(npyscreen.FormWithMenus, npyscreen.ActionFormMinimal):
         # just for convenience so we don't have to keep writing Options.options
         options = self.Options.options
 
-        self.inFile = self.add(npyscreen.TitleFilenameCombo,name="Choisir votre message d'entree (.encrypted ou .signed)", label=True)
+        self.inFile = self.add(npyscreen.TitleFilenameCombo,name="Choisir votre message d'entrée (.encrypted ou .signed)", label=True)
         options.append(npyscreen.OptionSingleChoice('Type de chiffrement', choices=ChiffAsymHelper.getAvailable()))
 
-        self.add(npyscreen.OptionListDisplay, name="Option List", 
+        self.add(npyscreen.OptionListDisplay, name="Liste d'options", 
                 values = options, 
                 scroll_exit=True,
                 max_height=2)
-        self.keyFile = self.add(npyscreen.TitleFilenameCombo,name="Choisir votre clef prive", label=True)
-        self.pwd = self.add(npyscreen.TitlePassword, name = "Mot de passe (pour clef prive)")
-        self.mode = self.add(npyscreen.TitleSelectOne, max_height=4, value = [1,], name="Pick Mode",values = ["Decrypt","Verify-Sign"], scroll_exit=True)
+        self.keyFile = self.add(npyscreen.TitleFilenameCombo,name="Choisir votre clef privée", label=True)
+        self.pwd = self.add(npyscreen.TitlePassword, name = "Mot de passe (pour clef privée)")
+        self.mode = self.add(npyscreen.TitleSelectOne, max_height=4, value = [1,], name="Pick Mode",values = ["Décrypter","Vérifier la signature"], scroll_exit=True)
         
 
-        self.output = self.add(npyscreen.BoxTitle, name="Output:", max_height=6)
+        self.output = self.add(npyscreen.BoxTitle, name="Sortie de texte:", max_height=6)
         self.output.values = []
 
 

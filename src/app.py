@@ -17,13 +17,13 @@ class MyApp(npyscreen.NPSAppManaged):
         self.addForm("MAIN", MainForm, name="OUTIL SSI_INSAT POUR LA CRYPTOGRAPHIE", color="IMPORTANT",)
         # each func has a form (screen)
         self.addForm("CODAGE", CodageForm, name="Codage", color="WARNING")
-        self.addForm("DECODAGE", DecodageForm, name="Decodage", color="WARNING")
+        self.addForm("DECODAGE", DecodageForm, name="Décodage", color="WARNING")
         self.addForm("HACHAGE", HachageForm, name="Hachage", color="WARNING")
         self.addForm("CRAQUAGE", CraquageForm, name="Craquage", color="WARNING")
-        self.addForm("CHIFF_SYM", ChiffSymForm, name="Chiffrement Symetrique", color="WARNING")
-        self.addForm("DECHIFF_SYM", DechiffSymForm, name="Dechiffrement Symetrique", color="WARNING")
-        self.addForm("CHIFF_ASYM", ChiffAsymForm, name="Chiffrement Asymetrique", color="WARNING")
-        self.addForm("DECHIFF_ASYM", DechiffAsymForm, name="Dechiffrement Asymetrique", color="WARNING")
+        self.addForm("CHIFF_SYM", ChiffSymForm, name="Chiffrement Symétrique", color="WARNING")
+        self.addForm("DECHIFF_SYM", DechiffSymForm, name="Déchiffrement Symétrique", color="WARNING")
+        self.addForm("CHIFF_ASYM", ChiffAsymForm, name="Chiffrement Asymétrique", color="WARNING")
+        self.addForm("DECHIFF_ASYM", DechiffAsymForm, name="Déchiffrement Asymétrique", color="WARNING")
         
     def onCleanExit(self):
         npyscreen.notify_wait("Au revoir!")

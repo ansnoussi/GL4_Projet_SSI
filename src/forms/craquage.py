@@ -18,12 +18,12 @@ class CraquageForm(npyscreen.FormWithMenus, npyscreen.ActionFormMinimal):
         self.wordListFile = self.add(npyscreen.TitleFilenameCombo,name="Choisir votre dictionnaire des mots", label=True)
 
 
-        self.add(npyscreen.OptionListDisplay, name="Option List", 
+        self.add(npyscreen.OptionListDisplay, name="Liste d'options", 
                 values = options, 
                 scroll_exit=True,
                 max_height=6)
 
-        self.output = self.add(npyscreen.BoxTitle, name="Output:", max_height=7)
+        self.output = self.add(npyscreen.BoxTitle, name="Sortie de texte:", max_height=7)
         self.output.values = []
 
 
