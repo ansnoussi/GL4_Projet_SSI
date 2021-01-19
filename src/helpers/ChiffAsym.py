@@ -78,8 +78,8 @@ class ChiffAsymHelper:
             if path.exists(key_name):
 
                 #we import the key
-                encoded_key = open(key_name, "rb").read()
-                key = RSA.import_key(encoded_key, passphrase=pwd)
+                encrypted_key = open(key_name, "rb").read()
+                key = RSA.import_key(encrypted_key, passphrase=pwd)
             else:
                 #we create a new key
                 key = RSA.generate(2048)
@@ -106,12 +106,12 @@ class ChiffAsymHelper:
     def dec_rsa(file_to_decrypt,key,pwd):
         try:
             #first we import the key and init the cipher
-            encoded_key = open(key, "rb").read()
-            key = RSA.import_key(encoded_key, passphrase=pwd)
+            encrypted_key = open(key, "rb").read()
+            key = RSA.import_key(encrypted_key, passphrase=pwd)
 
-            # then we open the encoded msg
-            encoded_msg = open(file_to_decrypt, "rb").read()
-            msg = base64.b64decode(encoded_msg)
+            # then we open the encrypted msg
+            encrypted_msg = open(file_to_decrypt, "rb").read()
+            msg = base64.b64decode(encrypted_msg)
             cipher_rsa = PKCS1_OAEP.new(key)
 
             #then we decrypt the msg
@@ -198,9 +198,9 @@ class ChiffAsymHelper:
             key_name = "elgamal_" + key + ".key"
             if path.exists(key_name):
                 #we import the key
-                b64encoded_encrypted_key = open(key_name, "rb").read()
+                encrypted_key = open(key_name, "rb").read()
                 #we decrypt it using the password provided
-                _key = ChiffSymHelper.decrypt("AES" , b64encoded_encrypted_key.decode() , pwd)
+                _key = ChiffSymHelper.decrypt("AES" , encrypted_key.decode() , pwd)
                 
                 # we extract the components of the key (p,g,y,x)
                 clean_key_comps = []
@@ -252,8 +252,8 @@ class ChiffAsymHelper:
     def dec_elgamal(file_to_decrypt,key,pwd):
         try:
             #first we get the key
-            b64encoded_encrypted_key = open(key, "rb").read()
-            _key = ChiffSymHelper.decrypt("AES" , b64encoded_encrypted_key.decode() , pwd)
+            encrypted_key = open(key, "rb").read()
+            _key = ChiffSymHelper.decrypt("AES" , encrypted_key.decode() , pwd)
             
             clean_key_comps = []
             key_comps = _key.split("\n")
@@ -351,9 +351,9 @@ class ChiffAsymHelper:
         try:
 
             #first we get the key
-            b64encoded_encrypted_key = open(key, "rb").read()
+            encrypted_key = open(key, "rb").read()
             # we decrypt the key
-            _key = ChiffSymHelper.decrypt("AES" , b64encoded_encrypted_key.decode() , pwd)
+            _key = ChiffSymHelper.decrypt("AES" , encrypted_key.decode() , pwd)
             
             # we extract the components of the key
             clean_key_comps = []
