@@ -84,8 +84,8 @@ class ChiffSymHelper:
     def enc_des(string_to_encrypt,key):
         try:
             hashed_key = HachageHelper.hash('md5',key)
-            cipher = DES.new(hashed_key[:8])
-            padded_private_msg = string_to_encrypt + (padding_character * ((16-len(string_to_encrypt)) % 16))
+            cipher = DES.new(hashed_key[:7])
+            padded_private_msg = string_to_encrypt + (padding_character * ((8-len(string_to_encrypt)) % 8))
             encrypted_msg = cipher.encrypt(padded_private_msg)
             encoded_encrypted_msg = base64.b64encode(encrypted_msg)
 
@@ -97,7 +97,7 @@ class ChiffSymHelper:
     def dec_des(string_to_decrypt,key):
         try:
             hashed_key = HachageHelper.hash('md5',key)
-            cipher = DES.new(hashed_key[:8])
+            cipher = DES.new(hashed_key[:7])
             encrypted_msg = base64.b64decode(string_to_decrypt.encode())
             decrypted_msg = cipher.decrypt(encrypted_msg)
 
@@ -110,8 +110,8 @@ class ChiffSymHelper:
     def enc_des3(string_to_encrypt,key):
         try:
             hashed_key = HachageHelper.hash('md5',key)
-            cipher = DES3.new(hashed_key[:16])
-            padded_private_msg = string_to_encrypt + (padding_character * ((16-len(string_to_encrypt)) % 16))
+            cipher = DES3.new(hashed_key[:21])
+            padded_private_msg = string_to_encrypt + (padding_character * ((8-len(string_to_encrypt)) % 8))
             encrypted_msg = cipher.encrypt(padded_private_msg)
             encoded_encrypted_msg = base64.b64encode(encrypted_msg)
 
@@ -123,7 +123,7 @@ class ChiffSymHelper:
     def dec_des3(string_to_decrypt,key):
         try:
             hashed_key = HachageHelper.hash('md5',key)
-            cipher = DES3.new(hashed_key[:16])
+            cipher = DES3.new(hashed_key[:21])
             encrypted_msg = base64.b64decode(string_to_decrypt.encode())
             decrypted_msg = cipher.decrypt(encrypted_msg)
 
@@ -162,7 +162,7 @@ class ChiffSymHelper:
             hashed_key = HachageHelper.hash('md5',key)
             # CAST key must be at least 5 bytes and no more than 16 bytes long
             cipher = CAST.new(hashed_key[:16])
-            padded_private_msg = string_to_encrypt + (padding_character * ((16-len(string_to_encrypt)) % 16))
+            padded_private_msg = string_to_encrypt + (padding_character * ((8-len(string_to_encrypt)) % 8))
             encrypted_msg = cipher.encrypt(padded_private_msg)
             encoded_encrypted_msg = base64.b64encode(encrypted_msg)
 
