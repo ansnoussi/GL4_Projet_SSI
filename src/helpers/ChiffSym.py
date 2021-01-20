@@ -44,7 +44,7 @@ class ChiffSymHelper:
         except:
             return "Une erreur s'est produite, veuillez vérifier vos entrées"
 
-    #AES
+    #AES: BLOCK_SIZE(16 bytes) KEY_SIZE(16, 24, or 32 bytes)
     @staticmethod
     def enc_aes(string_to_encrypt,key):
         try:
@@ -79,7 +79,7 @@ class ChiffSymHelper:
         except:
             return "Une erreur s'est produite, veuillez vérifier vos entrées"
             
-    #DES
+    #DES: BLOCK_SIZE(8 bytes) KEY_SIZE(7 bytes)
     @staticmethod
     def enc_des(string_to_encrypt,key):
         try:
@@ -105,7 +105,7 @@ class ChiffSymHelper:
         except:
             return "Une erreur s'est produite, veuillez vérifier vos entrées"
             
-    #Triple DES
+    #Triple DES: BLOCK_SIZE(8 bytes) KEY_SIZE(21 or 14 bytes)
     @staticmethod
     def enc_des3(string_to_encrypt,key):
         try:
@@ -131,7 +131,7 @@ class ChiffSymHelper:
         except:
             return "Une erreur s'est produite, veuillez vérifier vos entrées"
             
-    #BLOWFISH
+    #BLOWFISH: BLOCK_SIZE(8 bytes) KEY_SIZE(4 -> 56 bytes)
     @staticmethod
     def enc_blowfish(string_to_encrypt,key):
         try:
@@ -155,7 +155,7 @@ class ChiffSymHelper:
         except:
             return "Une erreur s'est produite, veuillez vérifier vos entrées"
             
-    #CAST
+    #CAST: BLOCK_SIZE(8 bytes) KEY_SIZE(5 -> 16 bytes)
     @staticmethod
     def enc_cast(string_to_encrypt,key):
         try:
