@@ -49,7 +49,7 @@ class ChiffSymHelper:
     def enc_aes(string_to_encrypt,key):
         try:
             # AES key length must be either 16, 24, or 32 bytes long
-            # we will use truncated md5 hash so we don't restrict the user
+            # we will use truncated md5 (16 bytes) hash so we don't restrict the user
             hashed_key = HachageHelper.hash('md5',key)
             # use the secret key to create a AES cipher
             cipher = AES.new(hashed_key)
