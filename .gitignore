@@ -55,3 +55,9 @@ docs/_build/
 
 # PyBuilder
 target/
+
+# ignore keys, messages and signatures
+*.key
+*.encrypted
+*.msg
+*.signed
